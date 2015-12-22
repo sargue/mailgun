@@ -19,6 +19,21 @@ services for Java.
 
 ## Installation
 
+Add the dependency to your project:
+
+#### Gradle
+`compile 'net.sargue:mailgun:1.0.0'`
+
+#### Maven
+
+```xml
+<dependency>
+    <groupId>net.sargue</groupId>
+    <artifactId>mailgun</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
 ## Usage
 
 The library is pretty straighforward. You just need to remember two classes:
