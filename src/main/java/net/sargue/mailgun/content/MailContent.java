@@ -20,7 +20,7 @@ import java.util.Deque;
  * be used for building cutting edge responsive modern HTML messages. It's just
  * for simple cases where you need to send a message and you want to use some
  * basic HTML like tables and some formatting.
- * <p/>
+ * <p>
  * All null values used in text and content in general is simply replaced
  * by an empty String, no NPE or "null" text.
  */
@@ -83,8 +83,8 @@ public class MailContent {
 
     /**
      * Closes this MailContent. Checks about the closing tags throwing and
-     * {@see IllegalStateException} if there are any pending.
-     * <p/>
+     * {@link IllegalStateException} if there are any pending.
+     * <p>
      * The HTML version gets the <em>body</em> and <em>html</em> closing tags
      * and both receive a final new line.
      *
@@ -300,7 +300,7 @@ public class MailContent {
 
     /**
      * Opens a {@code <pre>} tag.
-     * <p/>
+     * <p>
      * @return the changed mail content object
      */
     public MailContent pre() {
@@ -310,7 +310,7 @@ public class MailContent {
     /**
      * Adds a {@code <pre>} block with text content. The plain text version will
      * get only the content.
-     * <p/>
+     * <p>
      * @param content the text content
      * @return the changed mail content object
      */
@@ -320,7 +320,7 @@ public class MailContent {
 
     /**
      * Opens a {@code <em>} tag.
-     * <p/>
+     * <p>
      *
      * @return the changed mail content object
      */
@@ -341,7 +341,7 @@ public class MailContent {
 
     /**
      * Opens a {@code <strong>} tag.
-     * <p/>
+     * <p>
      *
      * @return the changed mail content object
      */
