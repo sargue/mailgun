@@ -11,7 +11,7 @@ client library [Jersey](https://jersey.java.net/).
 
 An email sending service with a REST API.
 
-### What is Jersey?
+### What is [Jersey](https://jersey.java.net/)?
 
 A RESTful java library. Actually, the reference implementation of
 [JAX-RS](http://jax-rs-spec.java.net/), the standard API for RESTful web
@@ -22,6 +22,7 @@ services for Java.
 Add the dependency to your project:
 
 #### Gradle
+
 `compile 'net.sargue:mailgun:1.0.0'`
 
 #### Maven
@@ -48,11 +49,13 @@ if you want to send some simple messages in HTML.
 The library is built to be used as a fluent interface, almost a DSL, so the code
 is quite self explanatory.
 
+You can [check the javadocs](http://sargue.github.io/mailgun/).
+
 ### Requirements and dependencies
 
 Requires Java 7+.
 
-Depends on [Jersey 2](https://jersey.java.net/).
+Depends on [Jersey 2](https://jersey.java.net/) client.
 
 ### Configuration
 
