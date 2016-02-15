@@ -79,7 +79,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder from(String name, String email) {
-        return param("from", name + "<" + email + ">");
+        return param("from", name + " <" + email + ">");
     }
 
     /**
@@ -131,7 +131,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder cc(String name, String email) {
-        return param("cc", name + "<" + email + ">");
+        return param("cc", name + " <" + email + ">");
     }
 
     /**
@@ -157,7 +157,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder bcc(String name, String email) {
-        return param("bcc", name + "<" + email + ">");
+        return param("bcc", name + " <" + email + ">");
     }
 
     /**

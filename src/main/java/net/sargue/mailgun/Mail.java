@@ -72,7 +72,7 @@ public abstract class Mail {
         configureClient(client);
         return client
                 .register(configuration.httpAuthenticationFeature())
-                .target("https://api.mailgun.net/v3")
+                .target(configuration.apiUrl())
                 .path(configuration.domain())
                 .path("messages")
                 .request();

@@ -11,6 +11,7 @@ import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
  * everytime.
  */
 public class Configuration {
+    private String apiUrl = "https://api.mailgun.net/v3";
     private String domain;
     private String apiKey;
     private String from;
@@ -82,7 +83,19 @@ public class Configuration {
      * @return this configuration
      */
     public Configuration from(String name, String email) {
-        return from(name + "<" + email + ">");
+        return from(name + " <" + email + ">");
+    }
+
+    /**
+     * Sets the mailgun API endpoint. If not set defaults to the latest public
+     * one. This override is useful for mock testing.
+     *
+     * @param apiUrl    the mailgun API URL
+     * @return this configuration
+     */
+    public Configuration apiUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
+        return this;
     }
 
     /**
@@ -110,6 +123,15 @@ public class Configuration {
      */
     public String from() {
         return from;
+    }
+
+    /**
+     * Returns the configured mailgun API URL endpoint.
+     *
+     * @return the configured mailgun API URL endpoint.
+     */
+    public String apiUrl() {
+        return apiUrl;
     }
 
     HttpAuthenticationFeature httpAuthenticationFeature() {
