@@ -129,23 +129,10 @@ useful so send some feedback if you want to see more functionality here.
 
 ## Test suite
 
-The test suite is pretty basic as, for the moment, just builds and sends
-some real messages through Mailgun.
+There is a test suite using [WireMock](http://wiremock.org) to mock the Mailgun
+REST API endpoint.
 
-In order to enable the test you need to configure some properties as I cannot
-commit it to a public repository.
-
-Create a `mailgun-test.properties` in the project root directory with a content
-like this:
-
-```
-domain = yourmailgundomain.com
-apiKey = key-1234yourkey
-fromName = Test account
-fromEmail =  postmaster@yourmailgundomain.com
-toName = Your Name
-toEmail = you@email.com
-```
+The mail content test suite is a work in progress right now.
 
 ## Contributing
 
