@@ -55,6 +55,19 @@ public abstract class Mail {
                       });
     }
 
+    /**
+     * Sends the email asynchronously, ignoring the outcome.
+     *
+     * If you want to know if the message has been sent use
+     * {@link #sendAsync(MailRequestCallback)} instead.
+     */
+    public void sendAsync() {
+        prepareSend();
+        request()
+            .async()
+            .post(entity());
+    }
+
     Configuration configuration() {
         return configuration;
     }
