@@ -35,6 +35,19 @@ Add the dependency to your project:
 </dependency>
 ```
 
+#### A note about dependencies
+
+This project depends on the Jersey library (see above). The Jersey library
+is part of the bigger *glassfish*/*Oracle* ecosystem which apparently
+doesn't have top notch compatibility very high on its priority list.
+
+Said so, you may encounter problems with dependencies as there are some
+libraries which are repackaged under different Maven coordinates and will
+leak duplicates on your classpath.
+
+Please, see [issue #1](https://github.com/sargue/mailgun/issues/1) for details
+and workarounds. Thanks for your understanding.
+
 ## Usage
 
 The library is pretty straighforward. You just need to remember two classes:
@@ -49,7 +62,7 @@ if you want to send some simple messages in HTML.
 The library is built to be used as a fluent interface, almost a DSL, so the code
 is quite self explanatory.
 
-You can [check the javadocs](http://sargue.github.io/mailgun/).
+You can [check the javadocs](https://sargue.github.io/javadoc/mailgun/).
 
 ### Requirements and dependencies
 

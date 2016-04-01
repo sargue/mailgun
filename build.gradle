@@ -39,8 +39,10 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-task publishJavadocs(type: Exec, dependsOn: javadoc) {
-    commandLine 'publish-javadocs.cmd'
+task publishJavadocs(type: Copy, dependsOn: javadoc) {
+    delete '../sargue.github.io/javadoc/mailgun/'
+    from 'build/docs/javadoc'
+    into '../sargue.github.io/javadoc/mailgun/'
 }
 
 artifacts {
