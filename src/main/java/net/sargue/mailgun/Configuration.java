@@ -63,8 +63,8 @@ public class Configuration {
      * <p>
      * The address can be a simple email address ({@code doc@delorean.com}) or
      * a full address with a name ({@code Emmet Brown <doc@delorean.com>}).
-     * The latter form can also be achieved using the {@link #from(String, String)}
-     * method.
+     * The latter form can also be achieved using the
+     * {@link #from(String, String)} method.
      *
      * @param from the default sender address
      * @return this configuration
