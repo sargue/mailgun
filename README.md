@@ -1,5 +1,7 @@
 # Mailgun Java library
 
+[![Javadocs](http://www.javadoc.io/badge/net.sargue/mailgun.svg)](http://www.javadoc.io/doc/net.sargue/mailgun)
+
 ## Introduction
 ### What is this?
 
@@ -62,7 +64,7 @@ if you want to send some simple messages in HTML.
 The library is built to be used as a fluent interface, almost a DSL, so the code
 is quite self explanatory.
 
-You can [check the javadocs](https://sargue.github.io/javadoc/mailgun/).
+You can [check the javadocs](http://www.javadoc.io/doc/net.sargue/mailgun).
 
 ### Requirements and dependencies
 
