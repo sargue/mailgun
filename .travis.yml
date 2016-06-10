@@ -1,4 +1,4 @@
 language: java
-
+install: /bin/true
 before_install:
  - chmod +x gradlew
