@@ -16,6 +16,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testCompile.extendsFrom compileOnly
+}
+
 dependencies {
     compile 'org.glassfish.jersey.core:jersey-client:[2.22,)'
     compile 'org.glassfish.jersey.media:jersey-media-multipart:[2.22,)'
