@@ -1,30 +1,38 @@
 package net.sargue.mailgun.content;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Text;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.StringWriter;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * A helper designed to build easily basic HTML messages. It's not supposed to
- * be used for building cutting edge responsive modern HTML messages. It's just
- * for simple cases where you need to send a message and you want to use some
- * basic HTML like tables and some formatting.
+ * This class is deprecated. Don't use it. See below for instructions on how to
+ * migrate current code.
+ * <h3>Migration guide</h3>
  * <p>
- * All null values used in text and content in general is simply replaced
- * by an empty String, no NPE or "null" text.
+ * Where you had
+ * <pre>
+ * MailContent mailContent = new MailContent()
+ *      [content stuff here]
+ *      .close();
+ *
+ * MailBuilder.using(configuration)
+ *      .content(mailContent)
+ *      [mail envelope stuff here]
+ *      .build()
+ *      .send();
+ * </pre>
+ *
+ * You can translate it to this beauty:
+ * <pre>
+ * Mail.bodyBuilder(configuration)
+ *     [content stuff here]
+ *     .mail()
+ *     [mail envelope stuff here]
+ *     .build()
+ *     .send();
+ * </pre>
+ *
+ * @deprecated You should use the new {@link Builder}, see description.
  */
-@SuppressWarnings("unused")
 public class MailContent {
     private static final String CRLF = "\r\n";
 
@@ -139,23 +147,7 @@ public class MailContent {
     }
 
     private String escapeXml(String target) {
-        try {
-            Document document = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder()
-                    .newDocument();
-            Text text = document.createTextNode(target);
-            Transformer transformer = TransformerFactory.newInstance()
-                    .newTransformer();
-            DOMSource source = new DOMSource(text);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
-                                          "yes");
-            transformer.transform(source, result);
-            return writer.toString();
-        } catch (ParserConfigurationException | TransformerException e) {
-            return "";
-        }
+        return Util.escapeXml(target);
     }
 
     /**

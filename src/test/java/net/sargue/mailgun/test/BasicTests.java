@@ -46,13 +46,12 @@ public class BasicTests {
     }
 
     private MappingBuilder expectedBasicPost() {
-        return post(
-            urlEqualTo("/api/" + DOMAIN + "/messages"))
+        return post(urlEqualTo("/api/" + DOMAIN + "/messages"))
             .withHeader("Authorization", equalTo("Basic " + expectedAuthHeader))
             .withHeader("Content-Type",
                         equalTo("application/x-www-form-urlencoded"));
     }
-    
+
     private String mail(String name, String email) {
         return name + " <" + email + ">";
     }
@@ -225,5 +224,16 @@ public class BasicTests {
                     Assert.fail(throwable.getMessage());
                 }
             });
+    }
+
+    @Test
+    public void sendAsyncFireAndForget() {
+        MailBuilder.using(configuration)
+                   .to("doc@delorean.com")
+                   .subject("This is a plain text test")
+                   .text("Hello world!")
+                   .build()
+                   .sendAsync();
+        //TODO verificar que s'envia
     }
 }

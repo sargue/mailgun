@@ -1,6 +1,7 @@
 package net.sargue.mailgun;
 
-import net.sargue.mailgun.content.MailContent;
+import net.sargue.mailgun.content.Body;
+import net.sargue.mailgun.content.Builder;
 
 import javax.ws.rs.core.Form;
 import java.util.Objects;
@@ -207,9 +208,30 @@ public class MailBuilder {
      *
      * @param content the content of the message
      * @return this builder
+     * @deprecated use {@link #content(Body)}
      */
-    public MailBuilder content(MailContent content) {
+    @SuppressWarnings("deprecation")
+    public MailBuilder content(net.sargue.mailgun.content.MailContent content) {
         return text(content.text()).html(content.html());
+    }
+
+    /**
+     * Sets the content of the message, both the plain text and HTML version.
+     *
+     * @param body the content of the message
+     * @return this builder
+     */
+    public MailBuilder content(Body body) {
+        return text(body.text()).html(body.html());
+    }
+
+    /**
+     * Convenience shortcut to {@code Body.builder(configuration)}
+     *
+     * @return a new {@link Builder} associated with this MailBuilder
+     */
+    public Builder body() {
+        return new Builder(this);
     }
 
     /**

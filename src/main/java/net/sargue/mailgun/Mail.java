@@ -15,6 +15,16 @@ public abstract class Mail {
     }
 
     /**
+     * Convenience shortcut to {@code MailBuilder.using(configuration)}
+     *
+     * @param configuration the configuration to use
+     * @return a new {@link MailBuilder} which uses the specified configuration
+     */
+    public static MailBuilder using(Configuration configuration) {
+        return new MailBuilder(configuration);
+    }
+
+    /**
      * Sends the email.
      * <p>
      * This method send the request to the Mailgun service. It is a

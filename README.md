@@ -25,7 +25,7 @@ Add the dependency to your project:
 
 #### Gradle
 
-`compile 'net.sargue:mailgun:1.0.0'`
+`compile 'net.sargue:mailgun:1.1.0'`
 
 #### Maven
 
@@ -33,7 +33,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>mailgun</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -64,7 +64,11 @@ if you want to send some simple messages in HTML.
 The library is built to be used as a fluent interface, almost a DSL, so the code
 is quite self explanatory.
 
-You can [check the javadocs](http://www.javadoc.io/doc/net.sargue/mailgun).
+### Javadocs
+
+You can 
+[browse the javadocs](http://www.javadoc.io/doc/net.sargue/mailgun) 
+published thanks to the great javadoc.io service.
 
 ### Requirements and dependencies
 
@@ -79,7 +83,7 @@ First of all you need to prepare a `Configuration` object used by the library.
 Usually you can do this once and keep the same object for all your calls. It
 is thread safe.
 
-```
+```java
 Configuration configuration = new Configuration()
     .domain("somedomain.com")
     .apiKey("key-xxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -88,8 +92,8 @@ Configuration configuration = new Configuration()
 
 ### Sending a basic email
 
-```
-MailBuilder.using(configuration)
+```java
+Mail.using(configuration)
     .to("marty@mcfly.com")
     .subject("This is the subject")
     .text("Hello world!")
@@ -99,8 +103,8 @@ MailBuilder.using(configuration)
 
 ### Sending an email with an attachment
 
-```
-MailBuilder.using(configuration)
+```java
+Mail.using(configuration)
     .to("marty@mcfly.com")
     .subject("This message has an text attachment")
     .text("Please find attached a file.")
@@ -110,17 +114,31 @@ MailBuilder.using(configuration)
     .send();
 ```
 
-### Advanced content using `MailContent`
+### Advanced content using content helpers
 
-The `MailContent` class is a helper designed to build easily basic HTML 
+The classes on the package `net.sargue.mailgun.content` are designed 
+to easily build basic HTML 
 messages. It's not supposed to be used for building cutting edge responsive
 modern HTML messages. It's just for simple cases where you need to send a
 message and you want to use some basic HTML like tables and some formatting.
 
 Some self explanatory examples:
 
+```java
+Mail.using(configuration)
+    .body()
+    .h1("This is a heading")
+    .p("And this some text")
+    .mail()
+    .to("marty@mcfly.com")
+    .subject("This is the subject")
+    .build()
+    .send();
 ```
-MailContent content = new MailContent()
+
+```java
+Mail.using(configuration)
+    .body()
     .h3("Monthly report")
     .p("Report of the number of time travels this month")
     .table()
@@ -128,19 +146,68 @@ MailContent content = new MailContent()
         .row("Doc", "7")
         .row("Einstein", "0")
     .end()
-    .close();
-
-MailBuilder.using(configuration)
+    .mail()
     .to("marty@mcfly.com")
     .subject("Monthly Delorean usage")
-    .content(content)
     .build()
     .send();
 ```
 
-I have some internal half-developed extensions to this class, like converters,
-formatters, text padding and limiters, and so on. Not sure if it will be
-useful so send some feedback if you want to see more functionality here.
+Of course you can keep the body content and mail building separated.
+
+```java
+Body body = Body.builder()
+                .h1("This is a heading")
+                .p("And this some text")
+                .build();
+
+Mail.using(configuration)
+    .to("marty@mcfly.com")
+    .subject("This is the subject")
+    .content(body)
+    .build()
+    .send();
+```
+
+## Changelog
+
+### v1.0.0
+
+First published version.
+
+### v1.1.0
+
+* New *fire and forget* async send method. See `Mail.sendAsync()`. 
+* Some notable changes on the content generation helpers. More info 
+[in the wiki](https://github.com/sargue/mailgun/wiki/Mail-content-using-content-helpers) 
+The main code for sending simple mails hasn't changed.
+TL;DR Don't use `MailBuilder` anymore, use `Mail.bodyBuilder()`.
+ 
+Migration guide:
+
+Where you had
+```java
+MailContent mailContent = new MailContent()
+     [content stuff here]
+     .close();
+
+MailBuilder.using(configuration)
+     .content(mailContent)
+     [mail envelope stuff here]
+     .build()
+     .send();
+```
+
+You can translate it to this beauty:
+```java
+Mail.using(configuration)
+    .body()
+    [content stuff here]
+    .mail()
+    [mail envelope stuff here]
+    .build()
+    .send();
+```
 
 ## Test suite
 
@@ -151,6 +218,6 @@ The mail content test suite is a work in progress right now.
 
 ## Contributing
 
-All contribution is welcome. Use the issues section to send feature requests.
+All contributions are welcome. Use the issues section to send feature requests.
 Pull requests are also welcome, just try to stick with the overall code style
 and provide some tests if possible.

@@ -1,6 +1,11 @@
 package net.sargue.mailgun;
 
+import net.sargue.mailgun.content.ContentConverter;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Holds the configuration parameters needed by the library. This is a mutable
@@ -15,6 +20,28 @@ public class Configuration {
     private String domain;
     private String apiKey;
     private String from;
+
+    private List<Converter<?>> converters =
+        Collections.synchronizedList(new ArrayList<Converter<?>>());
+    private final static ContentConverter<Object> defaultConverter =
+        new ContentConverter<Object>() {
+            @Override
+            public String toString(Object value) {
+                return value.toString();
+            }
+        };
+
+    private final static class Converter<T> {
+        private Class<T> classOfConverter;
+        private ContentConverter<? super T> contentConverter;
+
+        Converter(Class<T> classOfConverter,
+                  ContentConverter<? super T> contentConverter)
+        {
+            this.classOfConverter = classOfConverter;
+            this.contentConverter = contentConverter;
+        }
+    }
 
     /**
      * Constructs an empy configuration.
@@ -132,6 +159,34 @@ public class Configuration {
      */
     public String apiUrl() {
         return apiUrl;
+    }
+
+    /**
+     * Registers a converter.
+     *
+     * Converters are used mainly by the
+     * {@link net.sargue.mailgun.content.Builder#text(Object)} method.
+     *
+     * TODO
+     *
+     * @param <T>            the type parameter
+     * @param converter      the converter
+     * @param classToConvert the class to convert
+     * @return the configuration
+     */
+    public <T> Configuration registerConverter(ContentConverter<? super T> converter,
+                                               Class<T> classToConvert)
+    {
+        converters.add(new Converter<>(classToConvert, converter));
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> ContentConverter<T> converter(Class<T> classToConvert) {
+        for (Converter<?> converter : converters)
+            if (converter.classOfConverter.isAssignableFrom(classToConvert))
+                return (ContentConverter<T>) converter.contentConverter;
+        return (ContentConverter<T>) defaultConverter;
     }
 
     HttpAuthenticationFeature httpAuthenticationFeature() {
