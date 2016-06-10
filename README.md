@@ -1,6 +1,7 @@
 # Mailgun Java library
 
 [![Javadocs](http://www.javadoc.io/badge/net.sargue/mailgun.svg)](http://www.javadoc.io/doc/net.sargue/mailgun)
+[![Build Status](https://travis-ci.org/sargue/mailgun.svg?branch=master)](https://travis-ci.org/sargue/mailgun)
 
 ## Introduction
 ### What is this?
