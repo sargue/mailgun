@@ -1,19 +1,18 @@
+plugins {
+    id "com.jfrog.bintray" version "1.6"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'idea'
 
 group 'net.sargue'
 archivesBaseName = 'mailgun'
 version '1.1.0'
 
-def NEXUS_USERNAME = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
-def NEXUS_PASSWORD = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
-
 sourceCompatibility = 1.7
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -44,51 +43,54 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-signing {
-    sign configurations.archives
-}
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'Mailgun java library'
+            description 'Library to send email messages from Java using the Mailgun service'
+            url 'https://github.com/sargue/mailgun'
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            scm {
+                connection 'scm:git:git@github.com:sargue/mailgun.git'
+                developerConnection 'scm:git:git@github.com:sargue/mailgun.git'
+                url 'git@github.com:sargue/mailgun.git'
             }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            licenses {
+                license {
+                    name 'The MIT License'
+                    url 'https://opensource.org/licenses/MIT'
+                }
             }
 
-            pom.project {
-                name 'Mailgun java library'
-                packaging 'jar'
-                description 'Library to send email messages from Java using the Mailgun service'
-                url 'https://github.com/sargue/mailgun'
-
-                scm {
-                    connection 'scm:git:git@github.com:sargue/mailgun.git'
-                    developerConnection 'scm:git:git@github.com:sargue/mailgun.git'
-                    url 'git@github.com:sargue/mailgun.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The MIT License'
-                        url 'https://opensource.org/licenses/MIT'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'sargue'
-                        name 'Sergi Baila'
-                        email 'sargue@gmail.com'
-                    }
+            developers {
+                developer {
+                    id 'sargue'
+                    name 'Sergi Baila'
+                    email 'sargue@gmail.com'
                 }
             }
         }
     }
 }
 
+bintray {
+    user = BINTRAY_USER
+    key = BINTRAY_KEY
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'net.sargue:mailgun'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/sargue/mailgun.git'
+        version {
+            name = project.version
+            desc = 'Mailgun java library'
+
+            gpg {
+                sign = true
+                passphrase = BINTRAY_GPG
+            }
+        }
+    }
+}
