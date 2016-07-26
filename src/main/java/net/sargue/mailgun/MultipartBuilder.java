@@ -92,6 +92,21 @@ public class MultipartBuilder {
     }
 
     /**
+     * Adds a named inline attachment.
+     *
+     * @param is      an stream to read the attachment
+     * @param cidName the name to give to the attachment as referenced by the HTML email body
+     *                i.e. use cidName sample-image.png for the below example
+     *                <p>
+     *                    <img src="cid:sample-image.png"/>
+     *                </p>
+     * @return this builder
+     */
+    public MultipartBuilder inline(InputStream is, String cidName) {
+        return bodyPart(new StreamDataBodyPart("inline", is, cidName));
+    }
+
+    /**
      * Finishes the building phase and returns a {@link Mail}.
      * <p>
      * This builder should not be used after invoking this method.

@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -192,6 +193,28 @@ public class BasicTests {
                         "readme.txt")
             .build()
             .send();
+        Assert.assertTrue(response.isOk());
+
+        //TODO proper content checking
+    }
+
+    @Test
+    public void sendWithInlineAttachment() {
+        stubFor(post(urlEqualTo("/api/" + DOMAIN + "/messages"))
+                .withHeader("Authorization",
+                        equalTo("Basic " + expectedAuthHeader))
+                .withHeader("Content-Type",
+                        containing("multipart/form-data"))
+                .willReturn(aResponse().withStatus(200)));
+
+        Response response = MailBuilder.using(configuration)
+                .to("doc@delorean.com")
+                .subject("This message has an text attachment")
+                .html("<html>Inline image here: <img src=\"cid:cartman.jpg\"></html>")
+                .multipart()
+                .inline(new ByteArrayInputStream("MockBytes".getBytes()), "cartman.jpg")
+                .build()
+                .send();
         Assert.assertTrue(response.isOk());
 
         //TODO proper content checking
