@@ -75,8 +75,8 @@ install {
 }
 
 bintray {
-    user = hasProperty('BINTRAY_USER') ? BINTRAY_USER : ''
-    key = hasProperty('BINTRAY_KEY') ? BINTRAY_KEY : ''
+    user = project.hasProperty('BINTRAY_USER') ? BINTRAY_USER : ''
+    key = project.hasProperty('BINTRAY_KEY') ? BINTRAY_KEY : ''
     configurations = ['archives']
     pkg {
         repo = 'maven'
@@ -89,7 +89,7 @@ bintray {
 
             gpg {
                 sign = true
-                passphrase = hasProperty('BINTRAY_GPG') ? BINTRAY_GPG : ''
+                passphrase = project.hasProperty('BINTRAY_GPG') ? BINTRAY_GPG : ''
             }
         }
     }
