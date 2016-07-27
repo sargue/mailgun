@@ -212,6 +212,10 @@ Mail.using(configuration)
     .send();
 ```
 
+### v1.2.0
+
+* New method to add inline images thanks to [Lance Reid](https://github.com/lancedfr). See [PR](https://github.com/sargue/mailgun/pull/5).
+
 ## Test suite
 
 There is a test suite using [WireMock](http://wiremock.org) to mock the Mailgun
