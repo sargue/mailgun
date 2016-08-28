@@ -84,7 +84,7 @@ public abstract class Mail {
         return configuration;
     }
 
-    abstract Entity<?> entity();
+    abstract Entity<?> entity(); //NOSONAR
 
     abstract void prepareSend();
 

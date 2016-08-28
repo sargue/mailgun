@@ -22,6 +22,8 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class MultipartBuilder {
+    private static final String ATTACHMENT_NAME = "attachment";
+
     private final Configuration configuration;
     private FormDataMultiPart form = new FormDataMultiPart();
 
@@ -41,7 +43,7 @@ public class MultipartBuilder {
      * @return this builder
      */
     public MultipartBuilder attachment(File file) {
-        return bodyPart(new FileDataBodyPart("attachment", file));
+        return bodyPart(new FileDataBodyPart(ATTACHMENT_NAME, file));
     }
 
     /**
@@ -51,7 +53,7 @@ public class MultipartBuilder {
      * @return this builder
      */
     public MultipartBuilder attachment(InputStream is) {
-        return bodyPart(new StreamDataBodyPart("attachment", is));
+        return bodyPart(new StreamDataBodyPart(ATTACHMENT_NAME, is));
     }
 
     /**
@@ -62,7 +64,7 @@ public class MultipartBuilder {
      * @return this builder
      */
     public MultipartBuilder attachment(InputStream is, String filename) {
-        return bodyPart(new StreamDataBodyPart("attachment", is, filename));
+        return bodyPart(new StreamDataBodyPart(ATTACHMENT_NAME, is, filename));
     }
 
     /**
@@ -75,7 +77,7 @@ public class MultipartBuilder {
      */
     public MultipartBuilder attachment(InputStream is, String filename,
                                        MediaType mediaType) {
-        return bodyPart(new StreamDataBodyPart("attachment", is, filename,
+        return bodyPart(new StreamDataBodyPart(ATTACHMENT_NAME, is, filename,
                                                mediaType));
     }
 
@@ -88,7 +90,7 @@ public class MultipartBuilder {
      */
     public MultipartBuilder attachment(String content, String filename) {
         ByteArrayInputStream is = new ByteArrayInputStream(content.getBytes());
-        return bodyPart(new StreamDataBodyPart("attachment", is, filename));
+        return bodyPart(new StreamDataBodyPart(ATTACHMENT_NAME, is, filename));
     }
 
     /**

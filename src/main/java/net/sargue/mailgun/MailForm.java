@@ -13,10 +13,12 @@ class MailForm extends Mail {
         this.form = form;
     }
 
+    @Override
     Entity<?> entity() {
         return Entity.entity(form, APPLICATION_FORM_URLENCODED_TYPE);
     }
 
+    @Override
     void prepareSend() {
         // if no "from" specified revert to configuration default
         if (!form.asMap().containsKey("from") &&

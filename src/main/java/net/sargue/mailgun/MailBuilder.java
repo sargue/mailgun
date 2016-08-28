@@ -210,8 +210,8 @@ public class MailBuilder {
      * @return this builder
      * @deprecated use {@link #content(Body)}
      */
-    @SuppressWarnings("deprecation")
-    public MailBuilder content(net.sargue.mailgun.content.MailContent content) {
+    @Deprecated
+    public MailBuilder content(net.sargue.mailgun.content.MailContent content) { //NOSONAR
         return text(content.text()).html(content.html());
     }
 

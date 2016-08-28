@@ -1,5 +1,6 @@
 package net.sargue.mailgun.content;
 
+import net.sargue.mailgun.MailgunException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Text;
 
@@ -14,6 +15,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
 class Util {
+    private Util() {}
+
     static String escapeXml(String target) {
         try {
             Document document = DocumentBuilderFactory.newInstance()
@@ -30,7 +33,7 @@ class Util {
             transformer.transform(source, result);
             return writer.toString();
         } catch (ParserConfigurationException | TransformerException e) {
-            throw new RuntimeException("Problem escaping XML", e);
+            throw new MailgunException("Problem escaping XML", e);
         }
     }
 }

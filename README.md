@@ -2,6 +2,7 @@
 
 [![Javadocs](http://www.javadoc.io/badge/net.sargue/mailgun.svg)](http://www.javadoc.io/doc/net.sargue/mailgun)
 [![Build Status](https://travis-ci.org/sargue/mailgun.svg?branch=master)](https://travis-ci.org/sargue/mailgun)
+[![Quality Gate](http://nemo.sonarqube.org/api/badges/gate?key=mailgun)](https://sonarqube.com/overview?id=mailgun)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Download](https://api.bintray.com/packages/sargue/maven/net.sargue%3Amailgun/images/download.svg)](https://bintray.com/sargue/maven/net.sargue%3Amailgun/_latestVersion)
 

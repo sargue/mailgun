@@ -23,7 +23,7 @@ public class Configuration {
 
     private List<Converter<?>> converters =
         Collections.synchronizedList(new ArrayList<Converter<?>>());
-    private final static ContentConverter<Object> defaultConverter =
+    private static final ContentConverter<Object> defaultConverter =
         new ContentConverter<Object>() {
             @Override
             public String toString(Object value) {
@@ -31,7 +31,7 @@ public class Configuration {
             }
         };
 
-    private final static class Converter<T> {
+    private static final class Converter<T> {
         private Class<T> classOfConverter;
         private ContentConverter<? super T> contentConverter;
 
@@ -47,6 +47,7 @@ public class Configuration {
      * Constructs an empy configuration.
      */
     public Configuration() {
+        // empty constructor
     }
 
     /**
@@ -166,8 +167,6 @@ public class Configuration {
      *
      * Converters are used mainly by the
      * {@link net.sargue.mailgun.content.Builder#text(Object)} method.
-     *
-     * TODO
      *
      * @param <T>            the type parameter
      * @param converter      the converter

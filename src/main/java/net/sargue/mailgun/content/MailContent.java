@@ -33,7 +33,8 @@ import java.util.Deque;
  *
  * @deprecated You should use the new {@link Builder}, see description.
  */
-public class MailContent {
+@Deprecated
+public class MailContent { //NOSONAR
     private static final String CRLF = "\r\n";
 
     private MessageBuilder text = new MessageBuilder();
