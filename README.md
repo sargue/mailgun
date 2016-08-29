@@ -58,7 +58,7 @@ and workarounds. Thanks for your understanding.
 
 The library is pretty straighforward. You just need to remember two classes:
 
-* `Configuration`: which usually is a singleton you build one and re-use
+* `Configuration`: which usually is a singleton you build once and re-use
 * `MailBuilder`: the entry point to build and send emails
 * `MailContent`: an optional helper to build HTML and text message bodys
 
