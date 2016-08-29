@@ -8,4 +8,4 @@ before_install:
  - chmod +x gradlew
 script:
  - ./gradlew check
- - ./gradlew sonarqube -Dsonar.login=$SONAR_TOKEN
+ - ./gradlew sonarqube -DSONARQUBE_TOKEN=$SONAR_TOKEN
