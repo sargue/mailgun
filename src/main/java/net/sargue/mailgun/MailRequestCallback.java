@@ -1,7 +1,7 @@
 package net.sargue.mailgun;
 
 /**
- * A callback container for asynchronous sending of emails.
+ * A callback container for asynchronous requests.
  */
 public interface MailRequestCallback {
     /**

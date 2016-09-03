@@ -19,7 +19,8 @@ repositories {
 dependencies {
     compile 'org.glassfish.jersey.core:jersey-client:[2.22,)'
     compile 'org.glassfish.jersey.media:jersey-media-multipart:[2.22,)'
-    testCompile 'com.github.tomakehurst:wiremock:1.57'
+    testCompile 'com.github.tomakehurst:wiremock:2.1.11'
+    testCompile 'org.awaitility:awaitility:2.0.0'
     testCompile 'org.slf4j:slf4j-simple:+'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
