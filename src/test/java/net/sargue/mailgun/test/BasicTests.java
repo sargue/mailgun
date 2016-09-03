@@ -259,4 +259,27 @@ public class BasicTests {
                    .sendAsync();
         //TODO verificar que s'envia
     }
+
+    @Test
+    public void responsePayloadTest() {
+        String responseMessage =
+            "{ \"id\": \"" +
+            "<20160902095021.16212.7900.87F2C8F1@mydomain.com>" + "\", " +
+            "\"message\": \"" + "Queued. Thank you." + "\" }";
+        stubFor(expectedBasicPost().willReturn(
+            aResponse()
+                .withStatus(200)
+                .withBody(responseMessage)
+        ));
+
+        Response response = MailBuilder
+            .using(configuration)
+            .to("doc@delorean.com")
+            .subject("This is a plain text test")
+            .text("Hello world!")
+            .build()
+            .send();
+
+        Assert.assertEquals(responseMessage, response.responseMessage());
+    }
 }
