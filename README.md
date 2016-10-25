@@ -173,6 +173,10 @@ Mail.using(configuration)
     .send();
 ```
 
+There is also a very powerful extension mechanism which are the *content 
+converters*. Check it out with some more information about the these
+ classes [in the wiki](https://github.com/sargue/mailgun/wiki/Mail-content-using-content-helpers).
+
 ## Changelog
 
 ### v1.0.0
