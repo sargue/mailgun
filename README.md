@@ -29,7 +29,7 @@ Add the dependency to your project:
 
 #### Gradle
 
-`compile 'net.sargue:mailgun:1.2.0'`
+`compile 'net.sargue:mailgun:1.3.0'`
 
 #### Maven
 
@@ -37,7 +37,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>mailgun</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -220,6 +220,10 @@ Mail.using(configuration)
 ### v1.2.0
 
 * New method to add inline images thanks to [Lance Reid](https://github.com/lancedfr). See [PR](https://github.com/sargue/mailgun/pull/5).
+
+### v1.3.0
+
+* New method to retrieve the body of the response. Useful to check more information in the event of errors.
 
 ## Test suite
 
