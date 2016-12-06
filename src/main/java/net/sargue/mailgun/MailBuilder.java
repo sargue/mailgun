@@ -69,9 +69,9 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder from(String from) {
-        return param("from", from);
+        return from(null, from);
     }
-
+    
     /**
      * Sets the address of the sender.
      *
@@ -80,7 +80,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder from(String name, String email) {
-        return param("from", name + " <" + email + ">");
+        return param("from", email(name, email));
     }
 
     /**
@@ -95,7 +95,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder to(String to) {
-        return param("to", to);
+        return to(null, to);
     }
 
     /**
@@ -106,7 +106,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder to(String name, String email) {
-        return param("to", name + "<" + email + ">");
+        return param("to", email(name, email));
     }
 
     /**
@@ -121,7 +121,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder cc(String cc) {
-        return param("cc", cc);
+        return cc(null, cc);
     }
 
     /**
@@ -132,7 +132,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder cc(String name, String email) {
-        return param("cc", name + " <" + email + ">");
+        return param("cc", email(name, email));
     }
 
     /**
@@ -147,7 +147,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder bcc(String bcc) {
-        return param("bcc", bcc);
+        return bcc(null, bcc);
     }
 
     /**
@@ -158,7 +158,7 @@ public class MailBuilder {
      * @return this builder
      */
     public MailBuilder bcc(String name, String email) {
-        return param("bcc", name + " <" + email + ">");
+        return param("bcc", email(name, email));
     }
 
     /**
@@ -258,6 +258,10 @@ public class MailBuilder {
      */
     public Mail build() {
         return new MailForm(configuration, form);
+    }
+
+    private String email(String name, String email) {
+   	 return Objects.isNull(name) ? email : name + " <" + email + ">";
     }
 
     private MailBuilder param(String name, String value) {

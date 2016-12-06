@@ -128,6 +128,28 @@ public class BasicTests {
     }
 
     @Test
+    public void withNullName() {
+        stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
+
+        Response response = MailBuilder.using(configuration)
+            .from(null, "doc@delorean.com")
+            .to("marty@mcfly.com")
+            .subject("This is a plain text test")
+            .text("Hello world!")
+            .build()
+            .send();
+
+        assertTrue(response.isOk());
+
+        verifyMessageSent(
+            param("from", "doc@delorean.com"),
+            param("to", "marty@mcfly.com"),
+            param("subject", "This is a plain text test"),
+            param("text", "Hello world!")
+        );
+    }
+
+    @Test
     public void sendBasicTestMode() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 
