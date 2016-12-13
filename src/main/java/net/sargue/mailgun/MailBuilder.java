@@ -261,7 +261,7 @@ public class MailBuilder {
     }
 
     private String email(String name, String email) {
-   	 return Objects.isNull(name) ? email : name + " <" + email + ">";
+   	 return name == null ? email : name + " <" + email + ">";
     }
 
     private MailBuilder param(String name, String value) {

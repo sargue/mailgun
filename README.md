@@ -29,7 +29,7 @@ Add the dependency to your project:
 
 #### Gradle
 
-`compile 'net.sargue:mailgun:1.3.0'`
+`compile 'net.sargue:mailgun:1.3.1'`
 
 #### Maven
 
@@ -37,7 +37,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>mailgun</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
@@ -224,6 +224,10 @@ Mail.using(configuration)
 ### v1.3.0
 
 * New method to retrieve the body of the response. Useful to check more information in the event of errors.
+
+### v1.3.1
+
+* Merged PR [MailBuilder support for null name, to reduce burden of user](https://github.com/sargue/mailgun/pull/9)
 
 ## Test suite
 
