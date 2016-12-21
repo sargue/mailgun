@@ -80,6 +80,12 @@ Requires Java 7+.
 
 Depends on [Jersey 2](https://jersey.java.net/) client.
 
+### Android support
+
+There is not. Android is not officially supported. I have no experience on Android development so I won't be able to help much on any issue. There are a [number of issues raised](https://github.com/sargue/mailgun/issues?q=label%3Aandroid) which indicate that the library *can* be used on Android but YMMV.
+
+Anyway try it and if you find a problem please report it. I will try to help.
+
 ### Configuration
 
 First of all you need to prepare a `Configuration` object used by the library.
