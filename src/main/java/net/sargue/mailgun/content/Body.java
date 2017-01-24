@@ -55,6 +55,7 @@ public class Body {
      * Sets the HTML representation of this email body content.
      *
      * @param html the new HTML representation of this email body content
+     * @return this same Body object for call chaining
      */
     public Body html(String html) {
         this.html = html;
@@ -72,6 +73,7 @@ public class Body {
      * Sets the plain text representation of this email body content.
      *
      * @param text the new plain text representation of this email body content
+     * @return this same Body object for call chaining
      */
     public Body text(String text) {
         this.text = text;

@@ -100,7 +100,7 @@ public class MultipartBuilder {
      * @param cidName the name to give to the attachment as referenced by the HTML email body
      *                i.e. use cidName sample-image.png for the below example
      *                <p>
-     *                    <img src="cid:sample-image.png"/>
+     *                    <img src="cid:sample-image.png" alt="sample">
      *                </p>
      * @return this builder
      */

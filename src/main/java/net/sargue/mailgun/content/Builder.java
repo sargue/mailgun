@@ -311,7 +311,7 @@ public class Builder {
 
     /**
      * Opens a {@code <pre>} tag.
-     * <p/>
+     * <p>
      * @return this builder
      */
     public Builder pre() {
@@ -321,7 +321,7 @@ public class Builder {
     /**
      * Adds a {@code <pre>} block with text content. The plain text version will
      * get only the content.
-     * <p/>
+     * <p>
      * @param content the text content
      * @return this builder
      */
@@ -331,7 +331,7 @@ public class Builder {
 
     /**
      * Opens a {@code <em>} tag.
-     * <p/>
+     * <p>
      *
      * @return this builder
      */
@@ -352,7 +352,7 @@ public class Builder {
 
     /**
      * Opens a {@code <strong>} tag.
-     * <p/>
+     * <p>
      *
      * @return this builder
      */
@@ -404,6 +404,7 @@ public class Builder {
     /**
      * Adds a new row with one column.
      *
+     * @param <T>       the type parameter
      * @param firstCell the first cell content
      * @return this builder
      */
@@ -414,6 +415,7 @@ public class Builder {
     /**
      * Adds a new row with two columns.
      *
+     * @param <T>        the type parameter
      * @param firstCell  the first cell content
      * @param secondCell the second cell content
      * @return this builder
@@ -425,8 +427,9 @@ public class Builder {
     /**
      * Adds a new row with two columns, the first one being a header cell.
      *
-     * @param label  the header cell content
-     * @param data the second cell content
+     * @param <T>   the type parameter
+     * @param label the header cell content
+     * @param data  the second cell content
      * @return this builder
      */
     public <T> Builder rowh(String label, T data) {
@@ -436,6 +439,7 @@ public class Builder {
     /**
      * Adds a new row with three columns.
      *
+     * @param <T>        the type parameter
      * @param firstCell  the first cell content
      * @param secondCell the second cell content
      * @param thirdCell  the third cell content
@@ -454,6 +458,7 @@ public class Builder {
     /**
      * Adds a new row with four columns.
      *
+     * @param <T>        the type parameter
      * @param firstCell  the first cell content
      * @param secondCell the second cell content
      * @param thirdCell  the third cell content
@@ -493,6 +498,7 @@ public class Builder {
     /**
      * Adds a new cell with text content.
      *
+     * @param <T>     the type parameter
      * @param content the content to show inside the cell
      * @return this builder
      */
@@ -503,6 +509,7 @@ public class Builder {
     /**
      * Adds a new cell header with text content.
      *
+     * @param <T>     the type parameter
      * @param content the content to show inside the cell header
      * @return this builder
      */
