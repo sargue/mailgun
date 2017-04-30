@@ -84,6 +84,14 @@ Depends on [Jersey 2](https://jersey.java.net/) client.
 
 There is not. Android is not officially supported. I have no experience on Android development so I won't be able to help much on any issue. There are a [number of issues raised](https://github.com/sargue/mailgun/issues?q=label%3Aandroid) which indicate that the library *can* be used on Android but YMMV.
 
+The main issue about using this library on android is the repackaging of some packages done by Jersey, like `javax.inject`. If using gradle you could try to add this:
+
+```gradle
+configurations {
+    all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
+}
+```
+
 Anyway try it and if you find a problem please report it. I will try to help.
 
 ### Configuration
