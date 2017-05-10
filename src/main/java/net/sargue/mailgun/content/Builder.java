@@ -532,6 +532,39 @@ public class Builder {
         }
         return this;
     }
+    
+   /*
+    *
+    *
+    *
+    *
+    *              Links
+    *
+    *
+    *
+    *
+    */
+    
+    /**
+     * Adds a {@code <a>} tag with the following URL.
+     *
+     * @return this builder
+     */
+    public Builder link(String href) {
+        return link(href, href);
+    }
+
+   /**
+    * Adds a {@code <a>} tag with the following URL and title.
+    *
+    * @return this builder
+    */
+   public Builder link(String href, String title) {
+       text.a(title).a(" : ").a(href);
+       tag("a", "href='" + href + "' target='_blank'");
+       html.a(title);
+       return end();
+   }
 
     /*
      *
