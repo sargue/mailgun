@@ -11,13 +11,13 @@
 
 This is a small Java library to ease the sending of email messages using the
 great [Mailgun](http://www.mailgun.com/) service. It uses the RESTful Java
-client library [Jersey](https://jersey.java.net/).
+client library [Jersey](https://jersey.github.io/).
 
 ### What is [Mailgun](http://www.mailgun.com/)?
 
 An email sending service with a REST API.
 
-### What is [Jersey](https://jersey.java.net/)?
+### What is [Jersey](https://jersey.github.io/)?
 
 A RESTful java library. Actually, the reference implementation of
 [JAX-RS](http://jax-rs-spec.java.net/), the standard API for RESTful web
@@ -78,7 +78,7 @@ published thanks to the great javadoc.io service.
 
 Requires Java 7+.
 
-Depends on [Jersey 2](https://jersey.java.net/) client.
+Depends on [Jersey 2](https://jersey.github.io/) client.
 
 ### Android support
 
