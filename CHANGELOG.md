@@ -53,3 +53,7 @@ Mail.using(configuration)
 ## v1.3.2
 
 * Fixed dependency: Jersey 2.25 as >=2.26 targets Java EE 8 and Java 8 language level.
+
+## 1.4.0
+
+* New [low level functions](https://github.com/sargue/mailgun/wiki/Mail-content-using-content-helpers#low-level-html) on the HTML builder.

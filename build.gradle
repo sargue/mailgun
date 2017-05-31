@@ -8,7 +8,7 @@ apply plugin: 'maven'
 
 group 'net.sargue'
 archivesBaseName = 'mailgun'
-version '1.3.2'
+version '1.4.0'
 
 sourceCompatibility = 1.7
 
