@@ -571,7 +571,7 @@ public class Builder {
      *
      *
      *
-     *              Private
+     *              Low level functions
      *
      *
      *
@@ -584,7 +584,7 @@ public class Builder {
      * @param tag the tag name
      * @return this builder
      */
-    private Builder tag(String tag) {
+    public Builder tag(String tag) {
         ends.push("</" + tag + ">");
         html.a('<').a(tag).a('>');
         return this;
@@ -594,12 +594,12 @@ public class Builder {
      * Starts an HTML tag. It has no effect on the plain text version.
      *
      * @param tag      the tag name
-     * @param atributs attributes full text, like "style='color:red'"
+     * @param attributes attributes full text, like "style='color:red'"
      * @return this builder
      */
-    private Builder tag(String tag, String atributs) {
+    public Builder tag(String tag, String attributes) {
         ends.push("</" + tag + ">");
-        html.a('<').a(tag).sp().a(atributs).a('>');
+        html.a('<').a(tag).sp().a(attributes).a('>');
         return this;
     }
 }

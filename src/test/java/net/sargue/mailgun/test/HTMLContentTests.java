@@ -371,4 +371,66 @@ public class HTMLContentTests {
                      body.html());
         assertEquals("Google : http://www.google.com" + postText, body.text());
     }
+
+    @Test
+    public void emptyTag() {
+        Body body = Body.builder()
+                        .tag("span")
+                        .end()
+                        .build();
+        assertEquals(preHTML +
+                     "<span></span>" +
+                     postHTML,
+                     body.html());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void unclosedTag() {
+        Body.builder()
+            .tag("span")
+            .build();
+    }
+
+    @Test
+    public void simpleTag() {
+        Body body = Body.builder()
+                        .tag("span")
+                        .text("Hello world")
+                        .end()
+                        .build();
+        assertEquals(preHTML +
+                     "<span>Hello world</span>" +
+                     postHTML,
+                     body.html());
+    }
+
+
+    @Test
+    public void tagWithAttributes() {
+        Body body = Body.builder()
+                        .tag("span", "style='color:red'")
+                        .text("Hello world in color")
+                        .end()
+                        .build();
+        assertEquals(preHTML +
+                     "<span style='color:red'>Hello world in color</span>" +
+                     postHTML,
+                     body.html());
+    }
+
+    @Test
+    public void nestedTag() {
+        Body body = Body.builder()
+                        .p()
+                        .text("Hello world ")
+                        .tag("span", "style='color:red'")
+                        .text("in color")
+                        .end()
+                        .end()
+                        .build();
+        assertEquals(preHTML +
+                     "<p>Hello world <span style='color:red'>in color</span></p>" +
+                     postHTML,
+                     body.html());
+    }
 }
