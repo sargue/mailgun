@@ -231,6 +231,16 @@ public class HTMLContentTests {
     }
 
     @Test
+    public void colortext() {
+        Body body = Body.builder()
+                        .color("red", "color")
+                        .build();
+        assertEquals(preHTML + "<span style='color:red'>color</span>" + postHTML,
+                     body.html());
+        assertEquals("color" + postText, body.text());
+    }
+
+    @Test
     public void emptyTable() {
         Body body = Body.builder()
                         .table()

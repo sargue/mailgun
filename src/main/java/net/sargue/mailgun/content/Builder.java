@@ -371,6 +371,18 @@ public class Builder {
         return tag("strong").text(content).end();
     }
 
+    /**
+     * Adds a {@code <span>} block with text content of the required color. The plain text
+     * version will get only the content.
+     *
+     * @param content the text content
+     * @param content the text content
+     * @return this builder
+     */
+    public Builder color(String color, String content) {
+        return tag("span", "style='color:" + color + "'").text(content).end();
+    }
+    
     /*
      *
      *
