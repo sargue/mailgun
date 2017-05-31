@@ -548,6 +548,7 @@ public class Builder {
     /**
      * Adds a {@code <a>} tag with the following URL.
      *
+     * @param href the href attribute for the {@code <a>} tag
      * @return this builder
      */
     public Builder link(String href) {
@@ -555,14 +556,16 @@ public class Builder {
     }
 
    /**
-    * Adds a {@code <a>} tag with the following URL and title.
+    * Adds a {@code <a>} tag with the following URL and textContent.
     *
+    * @param href the href attribute for the {@code <a>} tag
+    * @param textContent the text content of the link
     * @return this builder
     */
-   public Builder link(String href, String title) {
-       text.a(title).a(" : ").a(href);
+   public Builder link(String href, String textContent) {
+       text.a(textContent).a(" : ").a(href);
        tag("a", "href='" + href + "' target='_blank'");
-       html.a(title);
+       html.a(textContent);
        return end();
    }
 
