@@ -375,7 +375,7 @@ public class Builder {
      * Adds a {@code <span>} block with text content of the required color. The plain text
      * version will get only the content.
      *
-     * @param content the text content
+     * @param color the text color
      * @param content the text content
      * @return this builder
      */
