@@ -359,4 +359,16 @@ public class HTMLContentTests {
                      body.html());
         assertEquals("label,data" + postText, body.text());
     }
+    
+    @Test
+    public void link() {
+        Body body = Body.builder()
+                        .link("http://www.google.com", "Google")
+                        .build();
+        assertEquals(preHTML +
+                     "<a href='http://www.google.com' target='_blank'>Google</a>" +
+                     postHTML,
+                     body.html());
+        assertEquals("Google : http://www.google.com" + postText, body.text());
+    }
 }
