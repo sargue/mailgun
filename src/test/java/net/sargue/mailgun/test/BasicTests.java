@@ -106,6 +106,31 @@ public class BasicTests {
     }
 
     @Test
+    public void withCustomHeader() {
+        stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
+
+        Response response = MailBuilder.using(configuration)
+            .to("marty@mcfly.com")
+            .subject("This is a plain text test")
+            .text("Hello world!")
+            .parameter("h:CustomHeader", "The header value")
+            .build()
+            .send();
+
+        assertTrue(response.isOk());
+        assertEquals(Response.ResponseType.OK,
+                     response.responseType());
+        assertEquals(200, response.responseCode());
+
+        verifyMessageSent(
+            param("to", "marty@mcfly.com"),
+            param("subject", "This is a plain text test"),
+            param("text", "Hello world!"),
+            param("h:CustomHeader", "The header value")
+        );
+    }
+
+    @Test
     public void withCustomFrom() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 
