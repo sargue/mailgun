@@ -57,3 +57,7 @@ Mail.using(configuration)
 ## 1.4.0
 
 * New [low level functions](https://github.com/sargue/mailgun/wiki/Mail-content-using-content-helpers#low-level-html) on the HTML builder.
+
+## 1.4.1
+
+* Fixed some null handling

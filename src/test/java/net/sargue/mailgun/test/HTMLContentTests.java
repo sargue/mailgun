@@ -433,4 +433,24 @@ public class HTMLContentTests {
                      postHTML,
                      body.html());
     }
+
+
+    @Test
+    public void nullStringHandling() {
+        Body body = Body.builder()
+                        .text(null)
+                        .build();
+        assertEquals(preHTML + postHTML, body.html());
+        assertEquals(postText, body.text());
+    }
+
+    @Test
+    public void nullObjectHandling() {
+        Object o = null;
+        Body body = Body.builder()
+                        .text(o)
+                        .build();
+        assertEquals(preHTML + postHTML, body.html());
+        assertEquals(postText, body.text());
+    }
 }

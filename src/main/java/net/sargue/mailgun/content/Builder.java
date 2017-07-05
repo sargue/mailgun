@@ -129,12 +129,20 @@ public class Builder {
      * @return this builder
      */
     public Builder text(String s) {
+        // null values add no text
+        if (s == null) {
+            return this;
+        }
         html.a(Util.escapeXml(s));
         text.a(s);
         return this;
     }
 
     public <T> Builder text(T value) {
+        // null values add no text
+        if (value == null) {
+            return this;
+        }
         //noinspection unchecked
         return text(value,
                     configuration.converter((Class<T>) value.getClass()));
