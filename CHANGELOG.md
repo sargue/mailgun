@@ -61,3 +61,9 @@ Mail.using(configuration)
 ## 1.4.1
 
 * Fixed some null handling
+
+## 1.5.0
+
+* Configuration now can store default parameters to be used when they
+are not specified on each mail building process. Inspired by [
+this issue report](https://github.com/sargue/mailgun/issues/21)
