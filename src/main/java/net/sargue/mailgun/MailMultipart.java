@@ -5,6 +5,8 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import java.util.List;
+import java.util.Map;
 
 class MailMultipart extends Mail {
     private FormDataMultiPart form = new FormDataMultiPart();
@@ -21,9 +23,15 @@ class MailMultipart extends Mail {
 
     @Override
     void prepareSend() {
-        // if no "from" specified revert to configuration default
-        if (form.getField("from") == null)
-            form.field("from", configuration().from());
+        // apply default parameters
+        Map<String, List<String>> defaultParameters = configuration().defaultParameters();
+        for (String name : defaultParameters.keySet()) {
+            if (form.getField(name) == null) {
+                for (String value : defaultParameters.get(name)) {
+                    form.field(name, value);
+                }
+            }
+        }
     }
 
     @Override

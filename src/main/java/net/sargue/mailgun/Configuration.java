@@ -3,9 +3,12 @@ package net.sargue.mailgun;
 import net.sargue.mailgun.content.ContentConverter;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Holds the configuration parameters needed by the library. This is a mutable
@@ -19,7 +22,7 @@ public class Configuration {
     private String apiUrl = "https://api.mailgun.net/v3";
     private String domain;
     private String apiKey;
-    private String from;
+    private MultivaluedMap<String,String> defaultParameters = new MultivaluedHashMap<>();
 
     private List<Converter<?>> converters =
         Collections.synchronizedList(new ArrayList<Converter<?>>());
@@ -60,7 +63,22 @@ public class Configuration {
     public Configuration(String domain, String apiKey, String from) {
         this.domain = domain;
         this.apiKey = apiKey;
-        this.from = from;
+        from(from);
+    }
+
+    /**
+     * Creates a copy of this configuration.
+     *
+     * @return a copy of this configuration
+     */
+    public Configuration copy() {
+        Configuration copy = new Configuration();
+        copy.apiUrl = apiUrl;
+        copy.domain = domain;
+        copy.apiKey = apiKey;
+        copy.defaultParameters = new MultivaluedHashMap<String,String>(defaultParameters);
+        copy.converters.addAll(converters);
+        return copy;
     }
 
     /**
@@ -93,12 +111,15 @@ public class Configuration {
      * a full address with a name ({@code Emmet Brown <doc@delorean.com>}).
      * The latter form can also be achieved using the
      * {@link #from(String, String)} method.
+     * <p>
+     * Note that this value is treated as a single value as opposed to the
+     * general default parameters stored in this configuration.
      *
      * @param from the default sender address
      * @return this configuration
      */
     public Configuration from(String from) {
-        this.from = from;
+        defaultParameters.putSingle("from", from);
         return this;
     }
 
@@ -127,6 +148,36 @@ public class Configuration {
     }
 
     /**
+     * Adds a new value to the specified default parameter.
+     * <p>
+     * This is only used if the parameter is not specified when building
+     * the specific mail.
+     * <p>
+     * Please note that parameters are multivalued. This method adds a new
+     * value. To set a new value you need to clear the default parameter first.
+     *
+     * @param name the name of the parameter
+     * @param value the new value to add to the parameter
+     * @return this configuration
+     * @see #clearDefaultParameter(String)
+     */
+    public Configuration addDefaultParameter(String name, String value) {
+        defaultParameters.add(name, value);
+        return this;
+    }
+
+    /**
+     * Removes all the values of the specified default parameter.
+     *
+     * @param name the name of the parameter
+     * @return this configuration
+     */
+    public Configuration clearDefaultParameter(String name) {
+        defaultParameters.remove(name);
+        return this;
+    }
+
+    /**
      * Returns the configured Mailgun domain.
      *
      * @return the configured Mailgun domain
@@ -150,7 +201,7 @@ public class Configuration {
      * @return the configured default sender address
      */
     public String from() {
-        return from;
+        return defaultParameters.getFirst("from");
     }
 
     /**
@@ -160,6 +211,17 @@ public class Configuration {
      */
     public String apiUrl() {
         return apiUrl;
+    }
+
+    /**
+     * Returns the internal map of default parameters.
+     *
+     * This is not a copy. Changes to this map are persistent.
+     *
+     * @return the internal map of default parameters
+     */
+    public Map<String, List<String>> defaultParameters() {
+        return defaultParameters;
     }
 
     /**

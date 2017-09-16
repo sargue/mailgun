@@ -131,6 +131,64 @@ public class BasicTests {
     }
 
     @Test
+    public void withDefaultParameter() {
+        stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
+
+        Configuration cfg = configuration
+            .copy()
+            .addDefaultParameter("h:sender", "from@default.com");
+
+        Response response = MailBuilder.using(cfg)
+                                       .to("marty@mcfly.com")
+                                       .subject("This is a plain text test")
+                                       .text("Hello world!")
+                                       .build()
+                                       .send();
+
+        assertTrue(response.isOk());
+        assertEquals(Response.ResponseType.OK,
+                     response.responseType());
+        assertEquals(200, response.responseCode());
+
+        verifyMessageSent(
+            param("to", "marty@mcfly.com"),
+            param("subject", "This is a plain text test"),
+            param("text", "Hello world!"),
+            param("h:sender", "from@default.com")
+        );
+    }
+
+    @Test
+    public void withDefaultParameterOverridden() {
+        stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
+
+        Configuration cfg = configuration
+            .copy()
+            .addDefaultParameter("h:sender", "from@default.com");
+
+        Response response = MailBuilder.using(cfg)
+                                       .to("marty@mcfly.com")
+                                       .subject("This is a plain text test")
+                                       .text("Hello world!")
+                                       .parameter("h:sender",
+                                                  "from@specific.com")
+                                       .build()
+                                       .send();
+
+        assertTrue(response.isOk());
+        assertEquals(Response.ResponseType.OK,
+                     response.responseType());
+        assertEquals(200, response.responseCode());
+
+        verifyMessageSent(
+            param("to", "marty@mcfly.com"),
+            param("subject", "This is a plain text test"),
+            param("text", "Hello world!"),
+            param("h:sender", "from@specific.com")
+        );
+    }
+
+    @Test
     public void withCustomFrom() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 

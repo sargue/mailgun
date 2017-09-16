@@ -64,7 +64,7 @@ public class ContentTests {
             }
         };
 
-        cfg.registerConverter(converter, Date.class);
+        cfg = cfg.registerConverter(converter, Date.class);
 
         Body body = Body.builder(cfg)
             .text(date)

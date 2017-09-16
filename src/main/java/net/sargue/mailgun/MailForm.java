@@ -2,6 +2,10 @@ package net.sargue.mailgun;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MultivaluedMap;
+
+import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE;
 
@@ -20,9 +24,13 @@ class MailForm extends Mail {
 
     @Override
     void prepareSend() {
-        // if no "from" specified revert to configuration default
-        if (!form.asMap().containsKey("from") &&
-                configuration().from() != null)
-            form.param("from", configuration().from());
+        // apply default parameters
+        MultivaluedMap<String, String> parameters = form.asMap();
+        Map<String, List<String>> defaultParameters = configuration().defaultParameters();
+        for (String name : defaultParameters.keySet()) {
+            if (!parameters.containsKey(name)) {
+                parameters.addAll(name, defaultParameters.get(name));
+            }
+        }
     }
 }
