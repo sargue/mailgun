@@ -111,7 +111,7 @@ public class Configuration {
      * @return this configuration
      */
     public Configuration from(String name, String email) {
-        return from(name + " <" + email + ">");
+        return from(MailBuilder.email(name, email));
     }
 
     /**

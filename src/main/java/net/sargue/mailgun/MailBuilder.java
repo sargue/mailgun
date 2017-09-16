@@ -260,7 +260,7 @@ public class MailBuilder {
         return new MailForm(configuration, form);
     }
 
-    private String email(String name, String email) {
+    static String email(String name, String email) {
    	 return name == null ? email : name + " <" + email + ">";
     }
 
