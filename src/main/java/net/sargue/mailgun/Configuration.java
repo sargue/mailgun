@@ -76,6 +76,7 @@ public class Configuration {
         copy.apiUrl = apiUrl;
         copy.domain = domain;
         copy.apiKey = apiKey;
+        //noinspection Convert2Diamond
         copy.defaultParameters = new MultivaluedHashMap<String,String>(defaultParameters);
         copy.converters.addAll(converters);
         return copy;

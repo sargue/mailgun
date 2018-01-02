@@ -132,6 +132,36 @@ Mail.using(configuration)
     .send();
 ```
 
+### More examples
+
+Some fields (more or less the ones that make sense) can be repeated.
+Like `to()` to send to multiple recipients, `attachment()` to include
+more than one attachment and so on.
+
+```java
+Mail.using(configuration)
+    .to("marty@mcfly.com")
+    .to("george@mcfly.com")
+    .cc("lorraine@mcfly.com")
+    .cc("dave@mcfly.com")
+    .subject("This is the subject")
+    .text("Hello world!")
+    .build()
+    .send();
+```
+
+```java
+Mail.using(configuration)
+    .to("marty@mcfly.com")
+    .subject("This message has an text attachment")
+    .text("Please find attached a file.")
+    .multipart()
+    .attachment(new File("/path/to/image.jpg"))
+    .attachment(new File("/path/to/report.pdf"))
+    .build()
+    .send();
+```
+
 ### Advanced content using content helpers
 
 The classes on the package `net.sargue.mailgun.content` are designed 
