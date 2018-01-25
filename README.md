@@ -6,6 +6,16 @@
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Download](https://api.bintray.com/packages/sargue/maven/net.sargue%3Amailgun/images/download.svg)](https://bintray.com/sargue/maven/net.sargue%3Amailgun/_latestVersion)
 
+## IMPORTANT NOTE (January 2018)
+
+On the 22nd of January the mailgun service switched its SSL certificate
+and the current one is not supported out of the box on any Java version
+prior to JRE 8u91.
+
+TL;DR You need to upgrade your JRE or manually importe the CA.
+
+See [this SO answer](https://stackoverflow.com/a/48425037/518992).
+
 ## Introduction
 ### What is this?
 
