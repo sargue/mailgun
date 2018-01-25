@@ -12,7 +12,7 @@ On the 22nd of January the mailgun service switched its SSL certificate
 and the current one is not supported out of the box on any Java version
 prior to JRE 8u91.
 
-TL;DR You need to upgrade your JRE or manually importe the CA.
+TL;DR You need to upgrade your JRE or manually import the CA.
 
 See [this SO answer](https://stackoverflow.com/a/48425037/518992).
 
