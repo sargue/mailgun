@@ -14,7 +14,8 @@ prior to JRE 8u91.
 
 TL;DR You need to upgrade your JRE or manually import the CA.
 
-See [this SO answer](https://stackoverflow.com/a/48425037/518992).
+See [this SO answer](https://stackoverflow.com/a/48425037/518992) and
+[this issue](https://github.com/sargue/mailgun/issues/27).
 
 ## Introduction
 ### What is this?
