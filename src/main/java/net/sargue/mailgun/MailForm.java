@@ -10,7 +10,7 @@ import java.util.Map;
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE;
 
 class MailForm extends Mail {
-    private Form form = new Form();
+    private Form form;
 
     MailForm(Configuration configuration, Form form) {
         super(configuration);
@@ -26,11 +26,9 @@ class MailForm extends Mail {
     void prepareSend() {
         // apply default parameters
         MultivaluedMap<String, String> parameters = form.asMap();
-        Map<String, List<String>> defaultParameters = configuration().defaultParameters();
-        for (String name : defaultParameters.keySet()) {
-            if (!parameters.containsKey(name)) {
-                parameters.addAll(name, defaultParameters.get(name));
-            }
-        }
+        Map<String, List<String>> def = configuration().defaultParameters();
+        for (Map.Entry<String, List<String>> entry : def.entrySet())
+            if (!parameters.containsKey(entry.getKey()))
+                parameters.addAll(entry.getKey(), entry.getValue());
     }
 }

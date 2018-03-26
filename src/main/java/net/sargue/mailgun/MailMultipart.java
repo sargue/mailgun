@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 class MailMultipart extends Mail {
-    private FormDataMultiPart form = new FormDataMultiPart();
+    private FormDataMultiPart form;
 
     MailMultipart(Configuration configuration, FormDataMultiPart form) {
         super(configuration);
@@ -24,14 +24,11 @@ class MailMultipart extends Mail {
     @Override
     void prepareSend() {
         // apply default parameters
-        Map<String, List<String>> defaultParameters = configuration().defaultParameters();
-        for (String name : defaultParameters.keySet()) {
-            if (form.getField(name) == null) {
-                for (String value : defaultParameters.get(name)) {
-                    form.field(name, value);
-                }
-            }
-        }
+        Map<String, List<String>> def = configuration().defaultParameters();
+        for (Map.Entry<String, List<String>> entry : def.entrySet())
+            if (form.getField(entry.getKey()) == null)
+                for (String value : entry.getValue())
+                    form.field(entry.getKey(), value);
     }
 
     @Override
