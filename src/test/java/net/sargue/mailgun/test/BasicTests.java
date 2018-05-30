@@ -3,10 +3,7 @@ package net.sargue.mailgun.test;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import net.sargue.mailgun.Configuration;
-import net.sargue.mailgun.MailBuilder;
-import net.sargue.mailgun.MailRequestCallback;
-import net.sargue.mailgun.Response;
+import net.sargue.mailgun.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -23,6 +20,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
@@ -84,20 +82,22 @@ public class BasicTests {
     public void basicText() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 
-        Response response = MailBuilder.using(configuration)
-            .to("marty@mcfly.com")
-            .subject("This is a plain text test")
-            .text("Hello world!")
-            .build()
-            .send();
+        String to = "marty@mcfly.com";
+        Mail mail = MailBuilder.using(configuration)
+                               .to(to)
+                               .subject("This is a plain text test")
+                               .text("Hello world!")
+                               .build();
+        Response response = mail.send();
 
+        assertEquals(mail.getFirstValue("to"), to);
+        assertEquals(mail.getValues("to"), newArrayList(to));
         assertTrue(response.isOk());
-        assertEquals(Response.ResponseType.OK,
-                     response.responseType());
+        assertEquals(Response.ResponseType.OK, response.responseType());
         assertEquals(200, response.responseCode());
 
         verifyMessageSent(
-            param("to", "marty@mcfly.com"),
+            param("to", to),
             param("subject", "This is a plain text test"),
             param("text", "Hello world!")
         );
@@ -234,27 +234,43 @@ public class BasicTests {
     public void sendBasicTestMode() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 
-        Response response = MailBuilder.using(configuration)
-                .from("firstrandom@address.com")
-                .from("Random account", "random@domain.com")
-                .to("doc@delorean.com")
-                .cc("onecc@example.com")
-                .cc("Named CC", "another@example.com")
-                .bcc("noone@example.com")
-                .bcc("Named BCC", "nobody@example.com")
-                .parameter("o:testmode", "yes")
-                .build()
-                .send();
+        String to = "doc@delorean.com";
+        String cc1 = "onecc@example.com";
+        String cc2Name = "Named CC";
+        String cc2Mail = "another@example.com";
+        String bcc1 = "noone@example.com";
+        String bcc2Name = "Named BCC";
+        String bcc2Mail = "nobody@example.com";
+        Mail mail = MailBuilder.using(configuration)
+                               .from("firstrandom@address.com")
+                               .from("Random account", "random@domain.com")
+                               .to(to)
+                               .cc(cc1)
+                               .cc(cc2Name, cc2Mail)
+                               .bcc(bcc1)
+                               .bcc(bcc2Name, bcc2Mail)
+                               .parameter("o:testmode", "yes")
+                               .build();
+        Response response = mail.send();
+
+        assertEquals(mail.getFirstValue("to"), to);
+        assertEquals(mail.getValues("to"), newArrayList(to));
+        assertEquals(mail.getFirstValue("cc"), cc1);
+        assertEquals(mail.getValues("cc"),
+                     newArrayList(cc1, cc2Name + " <" + cc2Mail + ">"));
+        assertEquals(mail.getFirstValue("bcc"), bcc1);
+        assertEquals(mail.getValues("bcc"),
+                     newArrayList(bcc1, bcc2Name + " <" + bcc2Mail + ">"));
         assertTrue(response.isOk());
 
         verifyMessageSent(
             param("from", "firstrandom@address.com"),
             param("from", mail("Random account", "random@domain.com")),
-            param("to", "doc@delorean.com"),
-            param("cc", "onecc@example.com"),
-            param("cc", mail("Named CC", "another@example.com")),
-            param("bcc", "noone@example.com"),
-            param("bcc", mail("Named BCC", "nobody@example.com")),
+            param("to", to),
+            param("cc", cc1),
+            param("cc", mail(cc2Name, cc2Mail)),
+            param("bcc", bcc1),
+            param("bcc", mail(bcc2Name, bcc2Mail)),
             param("o:testmode", "yes")
         );
     }

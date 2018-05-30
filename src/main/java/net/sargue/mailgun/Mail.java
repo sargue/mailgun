@@ -2,7 +2,11 @@ package net.sargue.mailgun;
 
 import org.glassfish.jersey.client.JerseyClientBuilder;
 
-import javax.ws.rs.client.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.InvocationCallback;
+import java.util.List;
 
 /**
  * Representation of a Mailgun's mail request.
@@ -25,6 +29,35 @@ public abstract class Mail {
     public static MailBuilder using(Configuration configuration) {
         return new MailBuilder(configuration);
     }
+
+    /**
+     * Retrieves the value of a given mail parameter. If there are multiple
+     * values the first one is returned. If the parameter hasn't been set
+     * null is returned.
+     *
+     * Can only be used on simple parameters (String). So don't use it on
+     * <i>attachment</i> for example. Doing so will throw a
+     * {@link IllegalStateException}.
+     *
+     * @param param the name of the parameter
+     * @return the first value of the parameter, if any, null otherwise
+     * @throws IllegalStateException if the parameter is not a simple (basic text) one
+     */
+    public abstract String getFirstValue(String param);
+
+    /**
+     * Retrieves the values of a given mail parameter. If the parameter hasn't
+     * been set an empty list is returned.
+     *
+     * Can only be used on simple parameters (String). So don't use it on
+     * <i>attachment</i> for example. Doing so will throw a
+     * {@link IllegalStateException}.
+     *
+     * @param param the name of the parameter
+     * @return the list of values for the parameter or an empty list
+     * @throws IllegalStateException if the parameter is not a simple (basic text) one
+     */
+    public abstract List<String> getValues(String param);
 
     /**
      * Sends the email.

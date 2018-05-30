@@ -18,6 +18,16 @@ class MailForm extends Mail {
     }
 
     @Override
+    public String getFirstValue(String param) {
+        return form.asMap().getFirst(param);
+    }
+
+    @Override
+    public List<String> getValues(String param) {
+        return form.asMap().get(param);
+    }
+
+    @Override
     Entity<?> entity() {
         return Entity.entity(form, APPLICATION_FORM_URLENCODED_TYPE);
     }
