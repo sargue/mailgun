@@ -67,3 +67,7 @@ Mail.using(configuration)
 * Configuration now can store default parameters to be used when they
 are not specified on each mail building process. Inspired by [
 this issue report](https://github.com/sargue/mailgun/issues/21)
+
+## 1.6.0
+
+* New methods to retrieve parameter values from a Mail instance
