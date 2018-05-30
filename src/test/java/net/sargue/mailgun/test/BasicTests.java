@@ -16,7 +16,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +39,7 @@ public class BasicTests {
     private static String expectedAuthHeader;
 
     @BeforeClass
-    public static void init() throws IOException {
+    public static void init() {
         configuration = new Configuration()
             .apiUrl("http://localhost:" + PORT + "/api")
             .domain(DOMAIN)
@@ -66,8 +65,7 @@ public class BasicTests {
     }
 
     private void verifyMessageSent(List<NameValuePair> parametersList) {
-        List<NameValuePair> parameters = new ArrayList<>();
-        parameters.addAll(parametersList);
+        List<NameValuePair> parameters = new ArrayList<>(parametersList);
         boolean fromFound = false;
         for (int i = 0; i < parameters.size() && !fromFound; i++)
             fromFound = parameters.get(i).getName().equals("from");
@@ -372,7 +370,7 @@ public class BasicTests {
             urlEqualTo("/api/somedomain.com/messages"));
         await().atMost(5, TimeUnit.SECONDS).until(new Callable<Boolean>() {
             @Override
-            public Boolean call() throws Exception {
+            public Boolean call() {
                 return !wireMockRule.findAll(postRequestedFor).isEmpty();
             }
         });
