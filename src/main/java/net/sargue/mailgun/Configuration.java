@@ -24,8 +24,10 @@ public class Configuration {
     private String apiKey;
     private MultivaluedMap<String,String> defaultParameters = new MultivaluedHashMap<>();
 
+    private MailRequestCallbackFactory mailRequestCallbackFactory = null;
     private List<Converter<?>> converters =
         Collections.synchronizedList(new ArrayList<Converter<?>>());
+
     private static final ContentConverter<Object> defaultConverter =
         new ContentConverter<Object>() {
             @Override
@@ -179,6 +181,29 @@ public class Configuration {
     }
 
     /**
+     * Registers a {@link MailRequestCallbackFactory} to use when sending the
+     * message asynchronously without specifying a callback. See
+     * {@link Mail#sendAsync()}
+     *
+     * @param factory a factory for creating default request callbacks
+     * @return this configuration
+     */
+    public Configuration registerMailRequestCallbackFactory(MailRequestCallbackFactory factory) {
+        mailRequestCallbackFactory = factory;
+        return this;
+    }
+
+    /**
+     * Removes the default request callback, if any.
+     *
+     * @return this configuration
+     */
+    public Configuration unregisterMailRequestCallbackFactory() {
+        mailRequestCallbackFactory = null;
+        return this;
+    }
+
+    /**
      * Returns the configured Mailgun domain.
      *
      * @return the configured Mailgun domain
@@ -223,6 +248,28 @@ public class Configuration {
      */
     public Map<String, List<String>> defaultParameters() {
         return defaultParameters;
+    }
+
+    /**
+     * Returns the configured default request callback factory.
+     *
+     * @return the configured default request callback factory
+     *         or null if there is none configured
+     */
+    public MailRequestCallbackFactory mailRequestCallbackFactory() {
+        return mailRequestCallbackFactory;
+    }
+
+    /**
+     * Convenience method to call {@link MailRequestCallbackFactory#create()}
+     * on the configured factory.
+     *
+     * @return a new {@link MailRequestCallback} using the configured factory
+     *         or null if there is no factory configured
+     */
+    public MailRequestCallback createMailRequestCallback() {
+        return mailRequestCallbackFactory == null ? null :
+            mailRequestCallbackFactory.create();
     }
 
     /**

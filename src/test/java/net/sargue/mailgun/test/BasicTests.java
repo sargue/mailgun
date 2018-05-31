@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.google.common.collect.Lists.newArrayList;
@@ -392,6 +393,53 @@ public class BasicTests {
         });
 
         verify(postRequestedFor);
+    }
+
+    @Test
+    public void sendAsyncDefaultCallback() {
+        stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
+        final AtomicBoolean callbackCalled = new AtomicBoolean(false);
+
+        final MailRequestCallback callback = new MailRequestCallback() {
+            @Override
+            public void completed(Response response) {
+                callbackCalled.set(true);
+                assertEquals(Response.ResponseType.OK,
+                             response.responseType());
+
+                verifyMessageSent(
+                    param("to", "doc@delorean.com"),
+                    param("subject", "This is a plain text test"),
+                    param("text", "Hello world!")
+                );
+            }
+
+            @Override
+            public void failed(Throwable throwable) {
+                fail(throwable.getMessage());
+            }
+        };
+
+        configuration.registerMailRequestCallbackFactory(new MailRequestCallbackFactory() {
+            @Override
+            public MailRequestCallback create() {
+                return callback;
+            }
+        });
+
+        MailBuilder.using(configuration)
+                   .to("doc@delorean.com")
+                   .subject("This is a plain text test")
+                   .text("Hello world!")
+                   .build()
+                   .sendAsync();
+
+        await().until(new Callable<Boolean>() {
+            @Override
+            public Boolean call() {
+                return callbackCalled.get();
+            }
+        });
     }
 
     @Test

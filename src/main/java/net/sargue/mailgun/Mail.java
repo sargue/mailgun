@@ -2,10 +2,7 @@ package net.sargue.mailgun;
 
 import org.glassfish.jersey.client.JerseyClientBuilder;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.InvocationCallback;
+import javax.ws.rs.client.*;
 import java.util.List;
 
 /**
@@ -101,16 +98,19 @@ public abstract class Mail {
     }
 
     /**
-     * Sends the email asynchronously, ignoring the outcome.
+     * Sends the email asynchronously. It uses the configuration provided
+     * default callback if available, ignoring the outcome otherwise.
      *
-     * If you want to know if the message has been sent use
+     * If you want to use a specific callback for this call use
      * {@link #sendAsync(MailRequestCallback)} instead.
      */
     public void sendAsync() {
-        prepareSend();
-        request()
-            .async()
-            .post(entity());
+        MailRequestCallback callback = configuration.createMailRequestCallback();
+        if (callback == null) {
+            prepareSend();
+            request().async().post(entity());
+        } else
+            sendAsync(callback);
     }
 
     Configuration configuration() {
