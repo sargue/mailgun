@@ -63,9 +63,11 @@ public abstract class Mail {
      * <strong>blocking</strong> method so it will return upon request
      * completion.
      *
-     * @return the response from the Mailgun service
+     * @return the response from the Mailgun service or null if the message
+     *         is not sent (filtered by {@link MailSendFilter}
      */
     public Response send() {
+        if (!configuration.mailSendFilter().filter(this)) return null;
         prepareSend();
         return new Response(request().post(entity()));
     }
@@ -80,6 +82,7 @@ public abstract class Mail {
      * @param callback the callback to be invoked upon completion or failure
      */
     public void sendAsync(final MailRequestCallback callback) {
+        if (!configuration.mailSendFilter().filter(this)) return;
         prepareSend();
         request()
                 .async()
@@ -105,6 +108,7 @@ public abstract class Mail {
      * {@link #sendAsync(MailRequestCallback)} instead.
      */
     public void sendAsync() {
+        if (!configuration.mailSendFilter().filter(this)) return;
         MailRequestCallbackFactory factory = configuration.mailRequestCallbackFactory();
         if (factory == null) {
             prepareSend();

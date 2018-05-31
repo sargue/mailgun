@@ -471,4 +471,26 @@ public class BasicTests {
 
         assertEquals(responseMessage, response.responseMessage());
     }
+
+    @Test
+    public void testFilteredSend() {
+        final AtomicBoolean filterExecuted = new AtomicBoolean(false);
+
+        Configuration configuration = new Configuration()
+            .registerMailSendFilter(new MailSendFilter() {
+                @Override
+                public boolean filter(Mail mail) {
+                    filterExecuted.set(true);
+                    return false;
+                }
+            });
+
+        Response response = MailBuilder
+            .using(configuration)
+            .build()
+            .send();
+
+        assertNull(response);
+        assertTrue(filterExecuted.get());
+    }
 }

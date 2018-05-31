@@ -25,6 +25,7 @@ public class Configuration {
     private MultivaluedMap<String,String> defaultParameters = new MultivaluedHashMap<>();
 
     private MailRequestCallbackFactory mailRequestCallbackFactory = null;
+    private MailSendFilter mailSendFilter = defaultFilter;
     private List<Converter<?>> converters =
         Collections.synchronizedList(new ArrayList<Converter<?>>());
 
@@ -35,6 +36,13 @@ public class Configuration {
                 return value.toString();
             }
         };
+
+    private static final MailSendFilter defaultFilter = new MailSendFilter() {
+        @Override
+        public boolean filter(Mail mail) {
+            return true;
+        }
+    };
 
     private static final class Converter<T> {
         private Class<T> classOfConverter;
@@ -72,12 +80,15 @@ public class Configuration {
      * Creates a copy of this configuration.
      *
      * @return a copy of this configuration
+     * @deprecated it's not clear what a 'copy' is so this method will be removed
      */
     public Configuration copy() {
         Configuration copy = new Configuration();
         copy.apiUrl = apiUrl;
         copy.domain = domain;
         copy.apiKey = apiKey;
+        copy.mailRequestCallbackFactory = mailRequestCallbackFactory;
+        copy.mailSendFilter = mailSendFilter;
         //noinspection Convert2Diamond
         copy.defaultParameters = new MultivaluedHashMap<String,String>(defaultParameters);
         copy.converters.addAll(converters);
@@ -204,6 +215,21 @@ public class Configuration {
     }
 
     /**
+     * Registers a filter to decide if a mail should be sent or not.
+     *
+     * This filter acts upon invokation of the different send methods in the
+     * {@link Mail} class preventing the actual request to Mailgun if the
+     * filter returns false.
+     *
+     * @param mailSendFilter the filter to apply to all messages
+     * @return this configuration
+     */
+    public Configuration registerMailSendFilter(MailSendFilter mailSendFilter) {
+        this.mailSendFilter = mailSendFilter;
+        return this;
+    }
+
+    /**
      * Returns the configured Mailgun domain.
      *
      * @return the configured Mailgun domain
@@ -258,6 +284,15 @@ public class Configuration {
      */
     public MailRequestCallbackFactory mailRequestCallbackFactory() {
         return mailRequestCallbackFactory;
+    }
+
+    /**
+     * Retrieves this configuration's filter.
+     *
+     * @return this configuration's filter
+     */
+    public MailSendFilter mailSendFilter() {
+        return mailSendFilter;
     }
 
     /**

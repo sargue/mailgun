@@ -130,4 +130,25 @@ public class ConfigurationTests {
 
         assertNull(configuration.mailRequestCallbackFactory());
     }
+
+    @Test
+    public void testDefaultFilter() {
+        Configuration configuration = new Configuration();
+
+        assertTrue(configuration.mailSendFilter().filter(null));
+    }
+
+    @Test
+    public void testRegisterFilter() {
+        MailSendFilter filter = new MailSendFilter() {
+            @Override
+            public boolean filter(Mail mail) {
+                return false;
+            }
+        };
+        Configuration configuration = new Configuration()
+            .registerMailSendFilter(filter);
+
+        assertSame(filter, configuration.mailSendFilter());
+    }
 }
