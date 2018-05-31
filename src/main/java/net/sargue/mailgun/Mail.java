@@ -105,15 +105,20 @@ public abstract class Mail {
      * {@link #sendAsync(MailRequestCallback)} instead.
      */
     public void sendAsync() {
-        MailRequestCallback callback = configuration.createMailRequestCallback();
-        if (callback == null) {
+        MailRequestCallbackFactory factory = configuration.mailRequestCallbackFactory();
+        if (factory == null) {
             prepareSend();
             request().async().post(entity());
         } else
-            sendAsync(callback);
+            sendAsync(factory.create(this));
     }
 
-    Configuration configuration() {
+    /**
+     * Retrieves the configuration associated with this Mail.
+     *
+     * @return the underlying configuration
+     */
+    public Configuration configuration() {
         return configuration;
     }
 

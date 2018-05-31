@@ -7,7 +7,8 @@ public interface MailRequestCallbackFactory {
     /**
      * Returns a {@link MailRequestCallback}. Could be new or the same.
      *
+     * @param mail the mail object where we will be using the callback
      * @return a MailRequestCallback
      */
-    MailRequestCallback create();
+    MailRequestCallback create(Mail mail);
 }

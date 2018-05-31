@@ -261,18 +261,6 @@ public class Configuration {
     }
 
     /**
-     * Convenience method to call {@link MailRequestCallbackFactory#create()}
-     * on the configured factory.
-     *
-     * @return a new {@link MailRequestCallback} using the configured factory
-     *         or null if there is no factory configured
-     */
-    public MailRequestCallback createMailRequestCallback() {
-        return mailRequestCallbackFactory == null ? null :
-            mailRequestCallbackFactory.create();
-    }
-
-    /**
      * Registers a converter.
      *
      * Converters are used mainly by the

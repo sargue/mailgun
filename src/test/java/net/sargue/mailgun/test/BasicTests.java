@@ -400,6 +400,9 @@ public class BasicTests {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
         final AtomicBoolean callbackCalled = new AtomicBoolean(false);
 
+        final String to = "doc@delorean.com";
+        final String subject = "This is a plain text test";
+        final String textBody = "Hello world!";
         final MailRequestCallback callback = new MailRequestCallback() {
             @Override
             public void completed(Response response) {
@@ -408,9 +411,9 @@ public class BasicTests {
                              response.responseType());
 
                 verifyMessageSent(
-                    param("to", "doc@delorean.com"),
-                    param("subject", "This is a plain text test"),
-                    param("text", "Hello world!")
+                    param("to", to),
+                    param("subject", subject),
+                    param("text", textBody)
                 );
             }
 
@@ -422,15 +425,19 @@ public class BasicTests {
 
         configuration.registerMailRequestCallbackFactory(new MailRequestCallbackFactory() {
             @Override
-            public MailRequestCallback create() {
+            public MailRequestCallback create(Mail mail) {
+                assertEquals(mail.getFirstValue("to"), to);
+                assertEquals(mail.getFirstValue("subject"), subject);
+                assertEquals(mail.getFirstValue("text"), textBody);
+
                 return callback;
             }
         });
 
         MailBuilder.using(configuration)
-                   .to("doc@delorean.com")
-                   .subject("This is a plain text test")
-                   .text("Hello world!")
+                   .to(to)
+                   .subject(subject)
+                   .text(textBody)
                    .build()
                    .sendAsync();
 

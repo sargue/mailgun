@@ -1,10 +1,7 @@
 package net.sargue.mailgun.test;
 
 import com.google.common.collect.Lists;
-import net.sargue.mailgun.Configuration;
-import net.sargue.mailgun.MailRequestCallback;
-import net.sargue.mailgun.MailRequestCallbackFactory;
-import net.sargue.mailgun.Response;
+import net.sargue.mailgun.*;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -93,7 +90,6 @@ public class ConfigurationTests {
         Configuration configuration = new Configuration();
 
         assertNull(configuration.mailRequestCallbackFactory());
-        assertNull(configuration.createMailRequestCallback());
     }
 
     @Test
@@ -108,7 +104,7 @@ public class ConfigurationTests {
 
         MailRequestCallbackFactory factory = new MailRequestCallbackFactory() {
             @Override
-            public MailRequestCallback create() {
+            public MailRequestCallback create(Mail mail) {
                 return mailRequestCallback;
             }
         };
@@ -117,33 +113,8 @@ public class ConfigurationTests {
             .registerMailRequestCallbackFactory(factory);
 
         assertSame(factory, configuration.mailRequestCallbackFactory());
-        assertSame(mailRequestCallback, configuration.createMailRequestCallback());
-        assertSame(configuration.createMailRequestCallback(),
-                   configuration.createMailRequestCallback());
-    }
-
-    @Test
-    public void testCallbackFactory() {
-        class MyCallback implements MailRequestCallback {
-            @Override
-            public void completed(Response response) { /*no op*/ }
-
-            @Override
-            public void failed(Throwable throwable) { /*no op*/ }
-        }
-
-        Configuration configuration = new Configuration()
-            .registerMailRequestCallbackFactory(new MailRequestCallbackFactory() {
-                @Override
-                public MailRequestCallback create() {
-                    return new MyCallback();
-                }
-            });
-
-        assertNotSame(configuration.createMailRequestCallback(),
-                      configuration.createMailRequestCallback());
-        assertEquals(MyCallback.class,
-                     configuration.createMailRequestCallback().getClass());
+        assertSame(mailRequestCallback,
+                   configuration.mailRequestCallbackFactory().create(null));
     }
 
     @Test
@@ -151,7 +122,7 @@ public class ConfigurationTests {
         Configuration configuration = new Configuration()
             .registerMailRequestCallbackFactory(new MailRequestCallbackFactory() {
                 @Override
-                public MailRequestCallback create() {
+                public MailRequestCallback create(Mail mail) {
                     return null;
                 }
             })
