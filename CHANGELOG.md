@@ -71,3 +71,7 @@ this issue report](https://github.com/sargue/mailgun/issues/21)
 ## 1.6.0
 
 * New methods to retrieve parameter values from a Mail instance
+
+## 1.7.0
+
+* New configuration facility to provide default callbacks for async sending
