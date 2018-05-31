@@ -40,7 +40,7 @@ Add the dependency to your project:
 
 #### Gradle
 
-`compile 'net.sargue:mailgun:1.7.0'`
+`compile 'net.sargue:mailgun:1.8.0'`
 
 #### Maven
 
@@ -48,7 +48,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>mailgun</artifactId>
-    <version>1.7.0</version>
+    <version>1.8.0</version>
 </dependency>
 ```
 

@@ -75,3 +75,8 @@ this issue report](https://github.com/sargue/mailgun/issues/21)
 ## 1.7.0
 
 * New configuration facility to provide default callbacks for async sending
+
+## 1.8.0
+
+* Fixed callback factory lacking context (Mail reference). Breaks v1.7.0 compatibility. Sorry about that, even if v1.7.0 lived only one day.
+* New mail filter to decide mail sending per instance.
