@@ -13,14 +13,14 @@ import java.util.GregorianCalendar;
 import static org.junit.Assert.assertEquals;
 
 public class ContentTests {
-    private final String CRLF = "\r\n";
-    private static final String PRE_HTML =
+    static final String CRLF = "\r\n";
+    static final String PRE_HTML =
         "<!DOCTYPE html><html><head>\r\n" +
         "<meta name='viewport' content='width=device-width' />" +
         "<meta http-equiv='Content-Type' " +
         "content='text/html; charset=UTF-8' />" +
         "</head><body>\r\n";
-    private static final String POST_HTML = "<br></body></html>";
+    static final String POST_HTML = "\r\n<br></body></html>";
 
     @Test
     public void empty() {

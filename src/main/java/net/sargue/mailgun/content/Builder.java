@@ -29,7 +29,7 @@ public class Builder {
         "<meta http-equiv='Content-Type' " +
         "content='text/html; charset=UTF-8' />" +
         "</head><body>\r\n";
-    private static final String POST_HTML = "<br></body></html>";
+    private static final String POST_HTML = "\r\n<br></body></html>";
     private static final List<String> newLineAfterTheseTags = Arrays.asList(
         "</h1>", "</h2>", "</h3>", "</h4>", "</h5>", "</h6>", "</p>", "</pre>",
         "</table>", "</thead>", "</tbody>", "</tfoot>", "</tr>"

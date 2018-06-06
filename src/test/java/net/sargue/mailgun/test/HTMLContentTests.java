@@ -3,18 +3,16 @@ package net.sargue.mailgun.test;
 import net.sargue.mailgun.content.Body;
 import org.junit.Test;
 
+import static net.sargue.mailgun.test.ContentTests.*;
 import static org.junit.Assert.assertEquals;
 
 public class HTMLContentTests {
-    private static final String CRLF = "\r\n";
-    private String preHTML =
-        "<!DOCTYPE html><html><head>" + CRLF +
-        "<meta name='viewport' content='width=device-width' />" +
-        "<meta http-equiv='Content-Type' content='text/html; " +
-        "charset=UTF-8' />" +
-        "</head><body>" + CRLF;
-    private String postHTML = CRLF + "<br></body></html>";
-    private final String postText = CRLF;
+    @Test
+    public void empty() {
+        Body body = Body.builder().build();
+        assertEquals(PRE_HTML + POST_HTML, body.html());
+        assertEquals("", body.text());
+    }
 
     @Test
     public void h1() {
@@ -22,8 +20,8 @@ public class HTMLContentTests {
                         .h1()
                         .end()
                         .build();
-        assertEquals(preHTML + "<h1></h1>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<h1></h1>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -31,8 +29,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .h1("h1")
                         .build();
-        assertEquals(preHTML + "<h1>h1</h1>" + postHTML, body.html());
-        assertEquals("h1" + postText, body.text());
+        assertEquals(PRE_HTML + "<h1>h1</h1>" + CRLF + POST_HTML, body.html());
+        assertEquals("h1" + CRLF, body.text());
     }
 
     @Test
@@ -55,8 +53,8 @@ public class HTMLContentTests {
                         .h2()
                         .end()
                         .build();
-        assertEquals(preHTML + "<h2></h2>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<h2></h2>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -64,8 +62,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .h2("h2")
                         .build();
-        assertEquals(preHTML + "<h2>h2</h2>" + postHTML, body.html());
-        assertEquals("h2" + postText, body.text());
+        assertEquals(PRE_HTML + "<h2>h2</h2>" + CRLF + POST_HTML, body.html());
+        assertEquals("h2" + CRLF, body.text());
     }
 
     @Test
@@ -74,8 +72,8 @@ public class HTMLContentTests {
                         .h3()
                         .end()
                         .build();
-        assertEquals(preHTML + "<h3></h3>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<h3></h3>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -83,8 +81,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .h3("h3")
                         .build();
-        assertEquals(preHTML + "<h3>h3</h3>" + postHTML, body.html());
-        assertEquals("h3" + postText, body.text());
+        assertEquals(PRE_HTML + "<h3>h3</h3>" + CRLF + POST_HTML, body.html());
+        assertEquals("h3" + CRLF, body.text());
     }
 
     @Test
@@ -93,8 +91,8 @@ public class HTMLContentTests {
                         .h4()
                         .end()
                         .build();
-        assertEquals(preHTML + "<h4></h4>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<h4></h4>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -102,8 +100,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .h4("h4")
                         .build();
-        assertEquals(preHTML + "<h4>h4</h4>" + postHTML, body.html());
-        assertEquals("h4" + postText, body.text());
+        assertEquals(PRE_HTML + "<h4>h4</h4>" + CRLF + POST_HTML, body.html());
+        assertEquals("h4" + CRLF, body.text());
     }
 
     @Test
@@ -112,8 +110,8 @@ public class HTMLContentTests {
                         .h5()
                         .end()
                         .build();
-        assertEquals(preHTML + "<h5></h5>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<h5></h5>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -121,8 +119,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .h5("h5")
                         .build();
-        assertEquals(preHTML + "<h5>h5</h5>" + postHTML, body.html());
-        assertEquals("h5" + postText, body.text());
+        assertEquals(PRE_HTML + "<h5>h5</h5>" + CRLF + POST_HTML, body.html());
+        assertEquals("h5" + CRLF, body.text());
     }
 
     @Test
@@ -131,8 +129,8 @@ public class HTMLContentTests {
                         .h6()
                         .end()
                         .build();
-        assertEquals(preHTML + "<h6></h6>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<h6></h6>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -140,8 +138,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .h6("h6")
                         .build();
-        assertEquals(preHTML + "<h6>h6</h6>" + postHTML, body.html());
-        assertEquals("h6" + postText, body.text());
+        assertEquals(PRE_HTML + "<h6>h6</h6>" + CRLF + POST_HTML, body.html());
+        assertEquals("h6" + CRLF, body.text());
     }
 
     @Test
@@ -149,8 +147,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .br()
                         .build();
-        assertEquals(preHTML + "<br>" + postHTML, body.html());
-        assertEquals(CRLF + CRLF + postText, body.text());
+        assertEquals(PRE_HTML + "<br>" + POST_HTML, body.html());
+        assertEquals(CRLF + CRLF, body.text());
     }
 
     @Test
@@ -159,8 +157,8 @@ public class HTMLContentTests {
                         .p()
                         .end()
                         .build();
-        assertEquals(preHTML + "<p></p>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<p></p>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -168,8 +166,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .p("p")
                         .build();
-        assertEquals(preHTML + "<p>p</p>" + postHTML, body.html());
-        assertEquals("p" + postText, body.text());
+        assertEquals(PRE_HTML + "<p>p</p>" + CRLF + POST_HTML, body.html());
+        assertEquals("p" + CRLF, body.text());
     }
 
     @Test
@@ -178,8 +176,8 @@ public class HTMLContentTests {
                         .pre()
                         .end()
                         .build();
-        assertEquals(preHTML + "<pre></pre>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<pre></pre>" + CRLF + POST_HTML, body.html());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -187,8 +185,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .pre("pre")
                         .build();
-        assertEquals(preHTML + "<pre>pre</pre>" + postHTML, body.html());
-        assertEquals("pre" + postText, body.text());
+        assertEquals(PRE_HTML + "<pre>pre</pre>" + CRLF + POST_HTML, body.html());
+        assertEquals("pre" + CRLF, body.text());
     }
 
     @Test
@@ -197,8 +195,8 @@ public class HTMLContentTests {
                         .em()
                         .end()
                         .build();
-        assertEquals(preHTML + "<em></em>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<em></em>" + POST_HTML, body.html());
+        assertEquals("", body.text());
     }
 
     @Test
@@ -206,8 +204,8 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .em("em")
                         .build();
-        assertEquals(preHTML + "<em>em</em>" + postHTML, body.html());
-        assertEquals("em" + postText, body.text());
+        assertEquals(PRE_HTML + "<em>em</em>" + POST_HTML, body.html());
+        assertEquals("em" + "", body.text());
     }
 
     @Test
@@ -216,8 +214,8 @@ public class HTMLContentTests {
                         .strong()
                         .end()
                         .build();
-        assertEquals(preHTML + "<strong></strong>" + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + "<strong></strong>" + POST_HTML, body.html());
+        assertEquals("", body.text());
     }
 
     @Test
@@ -225,9 +223,9 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .strong("strong")
                         .build();
-        assertEquals(preHTML + "<strong>strong</strong>" + postHTML,
+        assertEquals(PRE_HTML + "<strong>strong</strong>" + POST_HTML,
                      body.html());
-        assertEquals("strong" + postText, body.text());
+        assertEquals("strong" + "", body.text());
     }
 
     @Test
@@ -236,11 +234,11 @@ public class HTMLContentTests {
                         .table()
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'></table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals(postText, body.text());
+        assertEquals(CRLF, body.text());
     }
 
     @Test
@@ -251,13 +249,13 @@ public class HTMLContentTests {
                         .end()
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
-                     "<tr></tr>" +
+                     "<tr></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals(postText, body.text());
+        assertEquals(CRLF + CRLF, body.text());
     }
 
     @Test
@@ -267,13 +265,13 @@ public class HTMLContentTests {
                         .row("cell 1")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
-                     "<tr><td>cell 1</td></tr>" +
+                     "<tr><td>cell 1</td></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals("cell 1" + postText, body.text());
+        assertEquals("cell 1" + CRLF + CRLF, body.text());
     }
 
     @Test
@@ -283,13 +281,13 @@ public class HTMLContentTests {
                         .row("cell 1", "cell 2")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
-                     "<tr><td>cell 1</td><td>cell 2</td></tr>" +
+                     "<tr><td>cell 1</td><td>cell 2</td></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals("cell 1,cell 2" + postText, body.text());
+        assertEquals("cell 1,cell 2" + CRLF + CRLF, body.text());
     }
 
     @Test
@@ -299,13 +297,13 @@ public class HTMLContentTests {
                         .row("cell 1", "cell 2", "cell 3")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
-                     "<tr><td>cell 1</td><td>cell 2</td><td>cell 3</td></tr>" +
+                     "<tr><td>cell 1</td><td>cell 2</td><td>cell 3</td></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals("cell 1,cell 2,cell 3" + postText, body.text());
+        assertEquals("cell 1,cell 2,cell 3" + CRLF + CRLF, body.text());
     }
 
     @Test
@@ -315,14 +313,14 @@ public class HTMLContentTests {
                         .row("cell 1", "cell 2", "cell 3", "cell 4")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
                      "<tr><td>cell 1</td><td>cell 2</td>" +
-                     "<td>cell 3</td><td>cell 4</td></tr>" +
+                     "<td>cell 3</td><td>cell 4</td></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals("cell 1,cell 2,cell 3,cell 4" + postText, body.text());
+        assertEquals("cell 1,cell 2,cell 3,cell 4" + CRLF + CRLF, body.text());
     }
 
     @Test
@@ -334,13 +332,13 @@ public class HTMLContentTests {
                         .end()
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
-                     "<tr><th>cell header 1</th></tr>" +
+                     "<tr><th>cell header 1</th></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals("cell header 1" + postText, body.text());
+        assertEquals("cell header 1" + CRLF + CRLF, body.text());
     }
 
 
@@ -351,13 +349,13 @@ public class HTMLContentTests {
                         .rowh("label", "data")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<table border='1' cellpadding='0' cellspacing='0'>" +
-                     "<tr><th>label</th><td>data</td></tr>" +
+                     "<tr><th>label</th><td>data</td></tr>" + CRLF +
                      "</table>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
-        assertEquals("label,data" + postText, body.text());
+        assertEquals("label,data" + CRLF + CRLF, body.text());
     }
     
     @Test
@@ -365,11 +363,11 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .link("http://www.google.com", "Google")
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<a href='http://www.google.com' target='_blank'>Google</a>" +
-                     postHTML,
+                     POST_HTML,
                      body.html());
-        assertEquals("Google : http://www.google.com" + postText, body.text());
+        assertEquals("Google : http://www.google.com" + "", body.text());
     }
 
     @Test
@@ -378,9 +376,9 @@ public class HTMLContentTests {
                         .tag("span")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<span></span>" +
-                     postHTML,
+                     POST_HTML,
                      body.html());
     }
 
@@ -398,9 +396,9 @@ public class HTMLContentTests {
                         .text("Hello world")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<span>Hello world</span>" +
-                     postHTML,
+                     POST_HTML,
                      body.html());
     }
 
@@ -412,9 +410,9 @@ public class HTMLContentTests {
                         .text("Hello world in color")
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<span style='color:red'>Hello world in color</span>" +
-                     postHTML,
+                     POST_HTML,
                      body.html());
     }
 
@@ -428,9 +426,9 @@ public class HTMLContentTests {
                         .end()
                         .end()
                         .build();
-        assertEquals(preHTML +
+        assertEquals(PRE_HTML +
                      "<p>Hello world <span style='color:red'>in color</span></p>" +
-                     postHTML,
+                     CRLF + POST_HTML,
                      body.html());
     }
 
@@ -440,17 +438,16 @@ public class HTMLContentTests {
         Body body = Body.builder()
                         .text(null)
                         .build();
-        assertEquals(preHTML + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + POST_HTML, body.html());
+        assertEquals("", body.text());
     }
 
     @Test
     public void nullObjectHandling() {
-        Object o = null;
         Body body = Body.builder()
-                        .text(o)
+                        .text((Object) null)
                         .build();
-        assertEquals(preHTML + postHTML, body.html());
-        assertEquals(postText, body.text());
+        assertEquals(PRE_HTML + POST_HTML, body.html());
+        assertEquals("", body.text());
     }
 }
