@@ -13,32 +13,20 @@ import java.util.GregorianCalendar;
 import static org.junit.Assert.assertEquals;
 
 public class ContentTests {
-    private final String emptyText = "\r\n";
-
-    @Test
-    public void mailContentMigration() {
-        @SuppressWarnings("deprecation")
-        net.sargue.mailgun.content.MailContent mailContent =
-            new net.sargue.mailgun.content.MailContent().close();
-        Body body = Body.builder().build();
-        assertEquals("same HTML content",
-                     body.html(),
-                     mailContent.html());
-        assertEquals("same plain text content",
-                     body.text(),
-                     mailContent.text());
-    }
+    private final String CRLF = "\r\n";
+    private static final String PRE_HTML =
+        "<!DOCTYPE html><html><head>\r\n" +
+        "<meta name='viewport' content='width=device-width' />" +
+        "<meta http-equiv='Content-Type' " +
+        "content='text/html; charset=UTF-8' />" +
+        "</head><body>\r\n";
+    private static final String POST_HTML = "<br></body></html>";
 
     @Test
     public void empty() {
         Body content = Body.builder().build();
-        String emptyHTML = "<!DOCTYPE html><html><head>\r\n" +
-                           "<meta name='viewport' content='width=device-width' />" +
-                           "<meta http-equiv='Content-Type' content='text/html; " +
-                           "charset=UTF-8' />" +
-                           "</head><body>\r\n\r\n<br></body></html>";
-        assertEquals(emptyHTML, content.html());
-        assertEquals(emptyText, content.text());
+        assertEquals(PRE_HTML + POST_HTML, content.html());
+        assertEquals("", content.text());
     }
 
     @Test
@@ -70,7 +58,7 @@ public class ContentTests {
             .text(date)
             .build();
 
-        assertEquals("26/10/1985" +  emptyText, body.text());
+        assertEquals("26/10/1985", body.text());
     }
 
     @Test
@@ -93,6 +81,19 @@ public class ContentTests {
                         .text(new Timestamp(date.getTime()))
                         .build();
 
-        assertEquals("26/10/1985" +  emptyText, body.text());
+        assertEquals("26/10/1985", body.text());
+    }
+
+    @Test
+    public void basicText() {
+        Body content = Body.builder()
+                           .h1("This is the H1")
+                           .p("This is a P")
+                           .build();
+        assertEquals(PRE_HTML + "<h1>This is the H1</h1>" + CRLF +
+                     "<p>This is a P</p>" + CRLF + POST_HTML,
+                     content.html());
+        assertEquals("This is the H1" + CRLF + "This is a P" + CRLF,
+                     content.text());
     }
 }

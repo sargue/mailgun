@@ -4,7 +4,9 @@ import net.sargue.mailgun.Configuration;
 import net.sargue.mailgun.MailBuilder;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * A helper designed to build easily basic dual content type HTML and plain
@@ -21,14 +23,17 @@ import java.util.Deque;
  * to add your own.
  */
 public class Builder {
-    private static final String CRLF = "\r\n";
     private static final String PRE_HTML =
-        "<!DOCTYPE html><html><head>" + CRLF +
+        "<!DOCTYPE html><html><head>\r\n" +
         "<meta name='viewport' content='width=device-width' />" +
         "<meta http-equiv='Content-Type' " +
         "content='text/html; charset=UTF-8' />" +
-        "</head><body>" + CRLF;
+        "</head><body>\r\n";
     private static final String POST_HTML = "<br></body></html>";
+    private static final List<String> newLineAfterTheseTags = Arrays.asList(
+        "</h1>", "</h2>", "</h3>", "</h4>", "</h5>", "</h6>", "</p>", "</pre>",
+        "</table>", "</thead>", "</tbody>", "</tfoot>", "</tr>"
+    );
 
     private MessageBuilder html = new MessageBuilder().a(PRE_HTML);
     private MessageBuilder text = new MessageBuilder();
@@ -72,8 +77,7 @@ public class Builder {
         if (!ends.isEmpty())
             throw new IllegalStateException(
                 "Pending some closing. Some end() missing. ends=" + ends);
-        html.nl().a(POST_HTML);
-        text.nl();
+        html.a(POST_HTML);
         return new Body(html, text);
     }
 
@@ -105,7 +109,12 @@ public class Builder {
     public Builder end() {
         if (ends.isEmpty())
             throw new IllegalStateException("No pending tag/section to close.");
-        html.a(ends.pop());
+        String tag = ends.pop();
+        html.a(tag);
+        if (newLineAfterTheseTags.contains(tag.toLowerCase())) {
+            html.nl();
+            text.nl();
+        }
         return this;
     }
 
