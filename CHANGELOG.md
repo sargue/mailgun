@@ -80,3 +80,7 @@ this issue report](https://github.com/sargue/mailgun/issues/21)
 
 * Fixed callback factory lacking context (Mail reference). Breaks v1.7.0 compatibility. Sorry about that, even if v1.7.0 lived only one day.
 * New mail filter to decide mail sending per instance.
+
+## 1.8.1
+
+* Fixed text content missing line separators
