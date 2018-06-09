@@ -84,3 +84,7 @@ this issue report](https://github.com/sargue/mailgun/issues/21)
 ## 1.8.1
 
 * Fixed text content missing line separators
+
+## 1.9.0
+
+* New configuration options to define timeouts for the underlying connection client. [#29](https://github.com/sargue/mailgun/issues/29)
