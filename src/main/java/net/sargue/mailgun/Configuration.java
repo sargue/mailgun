@@ -22,6 +22,8 @@ public class Configuration {
     private String apiUrl = "https://api.mailgun.net/v3";
     private String domain;
     private String apiKey;
+    private int connectTimeout = 0;
+    private int readTimeout = 0;
     private MultivaluedMap<String,String> defaultParameters = new MultivaluedHashMap<>();
 
     private MailRequestCallbackFactory mailRequestCallbackFactory = null;
@@ -162,6 +164,40 @@ public class Configuration {
     }
 
     /**
+     * Connect timeout interval, in milliseconds.
+     * <p>
+     * A value of zero (0) is equivalent to an interval of infinity.
+     * </p>
+     * <p>
+     * The default value is infinity (0).
+     * </p>
+     *
+     * @param connectTimeout the connect timeout interval, in milliseconds
+     * @return this configuration
+     */
+    public Configuration connectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    /**
+     * Read timeout interval, in milliseconds.
+     * <p>
+     * A value of zero (0) is equivalent to an interval of infinity.
+     * </p>
+     * <p>
+     * The default value is infinity (0).
+     * </p>
+     *
+     * @param readTimeout the read timeout interval, in milliseconds
+     * @return this configuration
+     */
+    public Configuration readTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
      * Adds a new value to the specified default parameter.
      * <p>
      * This is only used if the parameter is not specified when building
@@ -263,6 +299,24 @@ public class Configuration {
      */
     public String apiUrl() {
         return apiUrl;
+    }
+
+    /**
+     * Returns the configured connect timeout.
+     *
+     * @return the configured connect timeout, in milliseconds
+     */
+    public int connectTimeout() {
+        return connectTimeout;
+    }
+
+    /**
+     * Returns the configured read timeout.
+     *
+     * @return the configured read timeout, in milliseconds
+     */
+    public int readTimeout() {
+        return readTimeout;
     }
 
     /**

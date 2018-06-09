@@ -2,8 +2,14 @@ package net.sargue.mailgun;
 
 import org.glassfish.jersey.client.JerseyClientBuilder;
 
-import javax.ws.rs.client.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.InvocationCallback;
 import java.util.List;
+
+import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
+import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 
 /**
  * Representation of a Mailgun's mail request.
@@ -136,6 +142,12 @@ public abstract class Mail {
 
     private Invocation.Builder request() {
         Client client = JerseyClientBuilder.newClient();
+
+        if (configuration.connectTimeout() != 0)
+            client.property(CONNECT_TIMEOUT, configuration.connectTimeout());
+        if (configuration.readTimeout() != 0)
+            client.property(READ_TIMEOUT, configuration.readTimeout());
+
         configureClient(client);
         return client
                 .register(configuration.httpAuthenticationFeature())

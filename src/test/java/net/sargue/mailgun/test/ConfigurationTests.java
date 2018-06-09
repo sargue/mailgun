@@ -151,4 +151,34 @@ public class ConfigurationTests {
 
         assertSame(filter, configuration.mailSendFilter());
     }
+
+    @Test
+    public void testConnectTimeout() {
+        Configuration configuration = new Configuration()
+            .connectTimeout(42);
+
+        assertEquals(42, configuration.connectTimeout());
+    }
+
+    @Test
+    public void testDefaultConnectTimeout() {
+        Configuration configuration = new Configuration();
+
+        assertEquals(0, configuration.connectTimeout());
+    }
+
+    @Test
+    public void testReadTimeout() {
+        Configuration configuration = new Configuration()
+            .readTimeout(42);
+
+        assertEquals(42, configuration.readTimeout());
+    }
+
+    @Test
+    public void testDefaultReadTimeout() {
+        Configuration configuration = new Configuration();
+
+        assertEquals(0, configuration.readTimeout());
+    }
 }
