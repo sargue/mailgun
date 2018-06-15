@@ -9,9 +9,9 @@ apply plugin: "jacoco"
 
 group 'net.sargue'
 archivesBaseName = 'mailgun'
-version '1.9.0'
+version '2.0.0-SNAPSHOT'
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 repositories {
     jcenter()
