@@ -351,9 +351,14 @@ public class Configuration {
 
     /**
      * Registers a converter.
-     *
+     * <p>
      * Converters are used mainly by the
      * {@link net.sargue.mailgun.content.Builder#text(Object)} method.
+     * <p>
+     * They are matched in declaration order checking for assignability
+     * (inheritance). So you can have a a {@link java.util.Date} converter
+     * which will be applied to a {@link java.sql.Timestamp} object. You will
+     * want to register the more specific converters first.
      *
      * @param <T>            the type parameter
      * @param converter      the converter
@@ -367,6 +372,19 @@ public class Configuration {
         return this;
     }
 
+    /**
+     * Returns the converter that would be used to convert the given class to
+     * a String.
+     * <p>
+     * The converters are matched in registered order checking for assignability
+     * (inheritance). If no converter is found the default converter
+     * ({@link Object#toString()} is returned.
+     *
+     * @param classToConvert the class of the object to convert
+     * @param <T> the type of the class
+     * @return the converter that would be used to process objects of the given
+     *         class
+     */
     @SuppressWarnings("unchecked")
     public <T> ContentConverter<T> converter(Class<T> classToConvert) {
         for (Converter<?> converter : converters)
