@@ -2,6 +2,7 @@ package net.sargue.mailgun.adapters.jersey2;
 
 import net.sargue.mailgun.MailBuilder;
 import net.sargue.mailgun.MailRequestCallback;
+import net.sargue.mailgun.MailgunException;
 import net.sargue.mailgun.Response;
 import net.sargue.mailgun.adapters.MailImplementationHelper;
 import net.sargue.mailgun.attachment.Attachment;
@@ -19,6 +20,7 @@ import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE;
 
@@ -86,14 +88,18 @@ public class Jersey2Mail extends MailImplementationHelper {
     }
 
     private Entity<?> multiPartEntity() {
-        FormDataMultiPart form = new FormDataMultiPart();
-        for (String parameter : parameterKeySet())
-            getValues(parameter).forEach(value -> form.field(parameter, value));
+        try (FormDataMultiPart form = new FormDataMultiPart()) {
+            for (String parameter : parameterKeySet())
+                getValues(parameter).forEach(value -> form.field(parameter,
+                                                                 value));
 
-        for (Attachment attachment : mailBuilder().attachments())
-            form.bodyPart(attachmentToBodyPart(attachment));
+            for (Attachment attachment : mailBuilder().attachments())
+                form.bodyPart(attachmentToBodyPart(attachment));
 
-        return Entity.entity(form, form.getMediaType());
+            return Entity.entity(form, form.getMediaType());
+        } catch (IOException e) {
+            throw new MailgunException("Exception closing multipart", e);
+        }
     }
 
     private BodyPart attachmentToBodyPart(Attachment attachment) {

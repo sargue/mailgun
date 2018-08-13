@@ -472,8 +472,9 @@ public class Configuration implements AutoCloseable {
             // try Jersey2
             restClientAdapter = new Jersey2Adapter(this);
             log.info("REST client library detected: Jersey 2");
-        } catch (Throwable t) {
-            throw new MailgunException("No REST client implementation found.");
+        } catch (Exception e) {
+            log.debug("Exception trying to bootstrap Jersey 2", e);
+            throw new MailgunException("No REST client implementation found");
         }
     }
 }

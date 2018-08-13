@@ -24,8 +24,6 @@ import java.util.concurrent.ForkJoinPool;
  * {@link MailImplementationHelper} might prove useful in that case.
  */
 public interface Mail {
-    Logger log = Logger.getLogger(Mail.class);
-
     /**
      * Convenience shortcut to {@code MailBuilder.using(configuration)}
      *
@@ -98,6 +96,7 @@ public interface Mail {
      * @param callback the callback to be invoked upon completion or failure
      */
     default void sendAsync(MailRequestCallback callback) {
+        Logger log = Logger.getLogger(Mail.class);
         log.debug("Using default implementation of Mail#sendAsync(MailRequestCallback)");
 
         if (!configuration().mailSendFilter().filter(this)) return;
@@ -131,6 +130,7 @@ public interface Mail {
      * with a callback generated from the configured {@link MailRequestCallbackFactory}.
      */
     default void sendAsync() {
+        Logger log = Logger.getLogger(Mail.class);
         log.debug("Using default implementation of Mail#sendAsync()");
 
         if (!configuration().mailSendFilter().filter(this)) return;

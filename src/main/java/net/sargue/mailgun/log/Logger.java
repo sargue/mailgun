@@ -83,13 +83,13 @@ public class Logger implements Log {
         }
 
         // If that's not on the classpath, try log4j instead
-        catch (Throwable e1) {
+        catch (Exception e1) {
             try {
                 result.log4j = org.apache.logging.log4j.LogManager.getLogger(clazz);
             }
 
             // If that's not on the classpath either, ignore most of logging
-            catch (Throwable e2) {
+            catch (Exception e2) {
                 result.util = java.util.logging.Logger.getLogger(clazz.getName());
             }
         }
@@ -97,21 +97,21 @@ public class Logger implements Log {
         try {
             result.isInfoEnabled();
         }
-        catch (Throwable e) {
+        catch (Exception e) {
             result.supportsInfo = false;
         }
 
         try {
             result.isDebugEnabled();
         }
-        catch (Throwable e) {
+        catch (Exception e) {
             result.supportsDebug = false;
         }
 
         try {
             result.isTraceEnabled();
         }
-        catch (Throwable e) {
+        catch (Exception e) {
             result.supportsTrace = false;
         }
 
