@@ -84,6 +84,7 @@ public class Configuration {
      * @return a copy of this configuration
      * @deprecated it's not clear what a 'copy' is so this method will be removed
      */
+    @Deprecated
     public Configuration copy() {
         Configuration copy = new Configuration();
         copy.apiUrl = apiUrl;
@@ -92,7 +93,7 @@ public class Configuration {
         copy.mailRequestCallbackFactory = mailRequestCallbackFactory;
         copy.mailSendFilter = mailSendFilter;
         //noinspection Convert2Diamond
-        copy.defaultParameters = new MultivaluedHashMap<String,String>(defaultParameters);
+        copy.defaultParameters = new MultivaluedHashMap<String,String>(defaultParameters); //NOSONAR
         copy.converters.addAll(converters);
         return copy;
     }
