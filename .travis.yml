@@ -1,7 +1,8 @@
-env:
-  global:
-    secure: "taWXSD6auhW09r7pslvGcbtvLYzh13CGm9eF1JPGyDqZkLBFc2ARwoYGCkzfj8TrlgieHk5r18SNExbYARdM95NGIaPffo+jgEJAPye9T65OBbU4zY32BuM8oYiveFgZCBbeVaaSYzRvh/Dk5npoXAwJEuQ+TIgeDBDg4vBqpDJJpPaczqfL08v/s+zaKeA6S5y9NChnJWsa3rgWkxu/nYNqKVC2i62M25uAZKVdadvB8BjHmxNuF12G5XrFjClxuENo5GxHgYeAy6fnPGMV9NsbH0dUq9NloGfyfxe0iXNV7QIY0ctfsKrsS7ZEmaHjzuelB9E/1ke0FtPDmaQ8QGH+EE1hlj2wuTbGJc3ND4DuEfLBlFLG57cRkbXyyhO9xtrwYUhujWYIMwCoXZpPhzrOUi7WLbnJSraai6gkoxMaM4xz+I0qc5b/UJWprkpth7SzEXDO75lEe5KxWEMjoFQl5N5KiSclRFHXO1nD1SVVGRZEOCQwlxaGBZeDqQzIqhhycYJPzEXbFfzrDjULNoxs15PbM623qP2wul7WR+ksRYCJ949oWjW4cWgiLxsuCfPtTCXu665N3KH4BePyDBtORzN5inYZcHp5UdnX1aZvqZtdLMqgjxwrg8jmwj00ZXGkf6TYgXq/pUoUjBqcFJhA2AY/WkdOl/7ALTM0afY="
-
+addons:
+  sonarcloud:
+    organization: "sargue-github" # the key of the org you chose at step #3
+    token:
+      secure: "taWXSD6auhW09r7pslvGcbtvLYzh13CGm9eF1JPGyDqZkLBFc2ARwoYGCkzfj8TrlgieHk5r18SNExbYARdM95NGIaPffo+jgEJAPye9T65OBbU4zY32BuM8oYiveFgZCBbeVaaSYzRvh/Dk5npoXAwJEuQ+TIgeDBDg4vBqpDJJpPaczqfL08v/s+zaKeA6S5y9NChnJWsa3rgWkxu/nYNqKVC2i62M25uAZKVdadvB8BjHmxNuF12G5XrFjClxuENo5GxHgYeAy6fnPGMV9NsbH0dUq9NloGfyfxe0iXNV7QIY0ctfsKrsS7ZEmaHjzuelB9E/1ke0FtPDmaQ8QGH+EE1hlj2wuTbGJc3ND4DuEfLBlFLG57cRkbXyyhO9xtrwYUhujWYIMwCoXZpPhzrOUi7WLbnJSraai6gkoxMaM4xz+I0qc5b/UJWprkpth7SzEXDO75lEe5KxWEMjoFQl5N5KiSclRFHXO1nD1SVVGRZEOCQwlxaGBZeDqQzIqhhycYJPzEXbFfzrDjULNoxs15PbM623qP2wul7WR+ksRYCJ949oWjW4cWgiLxsuCfPtTCXu665N3KH4BePyDBtORzN5inYZcHp5UdnX1aZvqZtdLMqgjxwrg8jmwj00ZXGkf6TYgXq/pUoUjBqcFJhA2AY/WkdOl/7ALTM0afY="
 jdk:
   - oraclejdk8
 language: java
@@ -9,6 +10,5 @@ install: /bin/true
 before_install:
  - chmod +x gradlew
 script:
- - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./gradlew check; fi
- - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew check sonarqube -PSONARQUBE_TOKEN=$SONAR_TOKEN; fi
-
+ - ./gradlew check
+ - sonar-scanner
