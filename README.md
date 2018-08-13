@@ -6,33 +6,22 @@
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Download](https://api.bintray.com/packages/sargue/maven/net.sargue%3Amailgun/images/download.svg)](https://bintray.com/sargue/maven/net.sargue%3Amailgun/_latestVersion)
 
-## IMPORTANT NOTE (January 2018)
+# ALPHA VERSION
 
-On the 22nd of January the mailgun service switched its SSL certificate
-and the current one is not supported out of the box on any Java version
-prior to JRE 8u91.
+This is the branch for a future version 2.x of the library. This is
+a work in progress. Comments, suggestions and contributions are welcome.
 
-TL;DR You need to upgrade your JRE or manually import the CA.
-
-See [this SO answer](https://stackoverflow.com/a/48425037/518992) and
-[this issue](https://github.com/sargue/mailgun/issues/27).
+This is alpha version work in progress. Breaking changes will happen.
 
 ## Introduction
 ### What is this?
 
 This is a small Java library to ease the sending of email messages using the
-great [Mailgun](http://www.mailgun.com/) service. It uses the RESTful Java
-client library [Jersey](https://jersey.github.io/).
+great [Mailgun](https://www.mailgun.com/) service.
 
 ### What is [Mailgun](http://www.mailgun.com/)?
 
 An email sending service with a REST API.
-
-### What is [Jersey](https://jersey.github.io/)?
-
-A RESTful java library. Actually, the reference implementation of
-[JAX-RS](http://jax-rs-spec.java.net/), the standard API for RESTful web
-services for Java.
 
 ## Installation
 
@@ -40,7 +29,7 @@ Add the dependency to your project:
 
 #### Gradle
 
-`compile 'net.sargue:mailgun:1.9.0'`
+`compile 'net.sargue:mailgun:2.0.0'`
 
 #### Maven
 
@@ -48,22 +37,29 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>mailgun</artifactId>
-    <version>1.9.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
-#### A note about dependencies
+### REST client library
 
-This project depends on the Jersey library (see above). The Jersey library
-is part of the bigger *glassfish*/*Oracle* ecosystem which apparently
-doesn't have top notch compatibility very high on its priority list.
+TL;DR
 
-Said so, you may encounter problems with dependencies as there are some
-libraries which are repackaged under different Maven coordinates and will
-leak duplicates on your classpath.
+You need a REST client library installed and supported on the classpath.
 
-Please, see [issue #1](https://github.com/sargue/mailgun/issues/1) for details
-and workarounds. Thanks for your understanding.
+If you are not using any REST client library in your project add
+these dependencies:
+
+```
+compile 'org.glassfish.jersey.core:jersey-client:2.25.1'
+compile 'org.glassfish.jersey.media:jersey-media-multipart:2.25.1'
+```
+
+This library requires a REST client installed on the classpath. The
+only library supported out of the box is [Jersey](https://jersey.github.io/)
+but you can implement support for any library. See
+[the wiki](https://github.com/sargue/mailgun/wiki/REST-client-library-support)
+for more details.
 
 ## Usage
 
@@ -87,23 +83,19 @@ published thanks to the great javadoc.io service.
 
 ### Requirements and dependencies
 
-Requires Java 7+.
+Requires Java 8+ and a
+[supported REST client library](https://github.com/sargue/mailgun/wiki/REST-client-library-support)
 
-Depends on [Jersey 2](https://jersey.github.io/) client.
+#### About certificates and Java versions
 
-### Android support
+On the 22nd of January 2018 the mailgun service switched its SSL certificate
+and the current one is not supported out of the box on any Java version
+prior to JRE 8u91.
 
-There is not. Android is not officially supported. I have no experience on Android development so I won't be able to help much on any issue. There are a [number of issues raised](https://github.com/sargue/mailgun/issues?q=label%3Aandroid) which indicate that the library *can* be used on Android but YMMV.
+TL;DR You need to upgrade your JRE or manually import the CA.
 
-The main issue about using this library on android is the repackaging of some packages done by Jersey, like `javax.inject`. If using gradle you could try to add this:
-
-```gradle
-configurations {
-    all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
-}
-```
-
-Anyway try it and if you find a problem please report it. I will try to help.
+See [this SO answer](https://stackoverflow.com/a/48425037/518992) and
+[this issue](https://github.com/sargue/mailgun/issues/27).
 
 ### Configuration
 
@@ -135,9 +127,8 @@ Mail.using(configuration)
 ```java
 Mail.using(configuration)
     .to("marty@mcfly.com")
-    .subject("This message has an text attachment")
+    .subject("This message has a text attachment")
     .text("Please find attached a file.")
-    .multipart()
     .attachment(new File("/path/to/image.jpg"))
     .build()
     .send();
@@ -164,9 +155,8 @@ Mail.using(configuration)
 ```java
 Mail.using(configuration)
     .to("marty@mcfly.com")
-    .subject("This message has an text attachment")
+    .subject("This message has a text attachment")
     .text("Please find attached a file.")
-    .multipart()
     .attachment(new File("/path/to/image.jpg"))
     .attachment(new File("/path/to/report.pdf"))
     .build()

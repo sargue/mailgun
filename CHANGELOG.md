@@ -88,3 +88,11 @@ this issue report](https://github.com/sargue/mailgun/issues/21)
 ## 1.9.0
 
 * New configuration options to define timeouts for the underlying connection client. [#29](https://github.com/sargue/mailgun/issues/29)
+
+## 2.0.0-SNAPSHOT
+
+* Java 8 is the new minimum requirement.
+* There is no longer a hard dependency on Jersey 2. Instead [an
+extension mechanism](https://github.com/sargue/mailgun/wiki/REST-client-library-support) with out of the box support for Jersey 2 is
+available.
+* Internal logging with logging library discovery.
