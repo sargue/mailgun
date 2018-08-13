@@ -1,9 +1,13 @@
 package net.sargue.mailgun;
 
+import net.sargue.mailgun.attachment.Attachment;
 import net.sargue.mailgun.content.Body;
 import net.sargue.mailgun.content.Builder;
 
-import javax.ws.rs.core.Form;
+import java.io.File;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,10 +17,10 @@ import java.util.Objects;
  * Can be instantiated using the constructor or a static factory method. In
  * any case the builder needs a configuration.
  */
-@SuppressWarnings("unused")
 public class MailBuilder {
-    private final Configuration configuration;
-    private Form form = new Form();
+    private Configuration    configuration;
+    private ParameterMap     parameters  = new ParameterMap();
+    private List<Attachment> attachments = new LinkedList<>();
 
     /**
      * Creates a {@code MailBuilder} with the provided configuration.
@@ -47,10 +51,6 @@ public class MailBuilder {
      */
     public Configuration configuration() {
         return configuration;
-    }
-
-    Form form() {
-        return form;
     }
 
     /**
@@ -206,18 +206,6 @@ public class MailBuilder {
     /**
      * Sets the content of the message, both the plain text and HTML version.
      *
-     * @param content the content of the message
-     * @return this builder
-     * @deprecated use {@link #content(Body)}
-     */
-    @Deprecated
-    public MailBuilder content(net.sargue.mailgun.content.MailContent content) { //NOSONAR
-        return text(content.text()).html(content.html());
-    }
-
-    /**
-     * Sets the content of the message, both the plain text and HTML version.
-     *
      * @param body the content of the message
      * @return this builder
      */
@@ -245,29 +233,168 @@ public class MailBuilder {
         return param(name, value);
     }
 
-    public MultipartBuilder multipart() {
-        return new MultipartBuilder(this);
+    /**
+     * Adds an attachment from a {@link File}.
+     *
+     * @param file a file to attach
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder attachment(File file) {
+        attachments.add(Attachment.create(file));
+        return this;
+    }
+
+    /**
+     * Adds an attachment from a {@link InputStream}.
+     *
+     * @param is an stream to read the attachment
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder attachment(InputStream is) {
+        attachments.add(Attachment.create(is));
+        return this;
+    }
+
+    /**
+     * Adds a named attachment.
+     *
+     * @param is       an stream to read the attachment
+     * @param filename the filename to give to the attachment
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder attachment(InputStream is, String filename) {
+        attachments.add(Attachment.create(is, filename));
+        return this;
+    }
+
+    /**
+     * Adds a named attachment with a custom MIME media type.
+     *
+     * @param is        an stream to read the attachment
+     * @param filename  the filename to give to the attachment
+     * @param mediaType the media type of the attachment
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder attachment(InputStream is, String filename, String mediaType) {
+        attachments.add(Attachment.create(is, filename, mediaType));
+        return this;
+    }
+
+    /**
+     * Adds an attachment directly by content.
+     *
+     * @param content the content of the attachment
+     * @param filename the filename of the attachment
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder attachment(String content, String filename) {
+        attachments.add(Attachment.create(content, filename));
+        return this;
+    }
+
+    /**
+     * Adds a named inline attachment.
+     *
+     * @param is      an stream to read the attachment
+     * @param cidName the name to give to the attachment as referenced by the HTML email body
+     *                i.e. use cidName sample-image.png for the below example
+     *                <p>
+     *                    <img src="cid:sample-image.png" alt="sample">
+     *                </p>
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder inline(InputStream is, String cidName) {
+        attachments.add(Attachment.inline(is, cidName));
+        return this;
+    }
+
+    /**
+     * Adds a named inline attachment.
+     *
+     * @param file    a file to attach
+     * @param cidName the name to give to the attachment as referenced by the HTML email body
+     *                i.e. use cidName sample-image.png for the below example
+     *                <p>
+     *                    <img src="cid:sample-image.png" alt="sample">
+     *                </p>
+     * @return this builder
+     * @since 2.0
+     */
+    public MailBuilder inline(File file, String cidName) {
+        attachments.add(Attachment.inline(file, cidName));
+        return this;
+    }
+
+    /**
+     * The current parameters for this mail request.
+     *
+     * @return the current parameters for this mail request
+     */
+    public ParameterMap parameters() {
+        return parameters;
+    }
+
+    /**
+     * Gets the current values of a given parameter.
+     * <p>
+     * Example: {@code parameter("to") -> ["doc@delorean.com", "marty@mcfly.com"]}
+     *
+     * @param key the name of the parameter
+     * @return the current value list of the parameter
+     */
+    public List<String> parameter(String key) {
+        return parameters.getValues(key);
+    }
+
+    /**
+     * Gets the current list of attachments.
+     * <p>
+     * Attachments are really like any other parameter to the Mailgun service but the content
+     * isn't anymore a mere String but probably something different and most of the time
+     * treated as an "application/octet-stream".
+     * <p>
+     * Also, the presence of attachments requires that the request to the Mailgun service
+     * must be done using the <tt>multipart/form-data</tt> encoding. This is automatically
+     * handled by each REST client adapter.
+     *
+     * @return the current list of attachments
+     * @since 2.0
+     */
+    public List<Attachment> attachments() {
+        return attachments;
     }
 
     /**
      * Finishes the building phase and returns a {@link Mail}.
-     * <p>
-     * This builder should not be used after invoking this method.
      *
      * @return a {@link Mail} built from this builder
      */
     public Mail build() {
-        return new MailForm(configuration, form);
+        defaultParameters();
+        return configuration.restClientAdapter().build(this);
     }
 
     static String email(String name, String email) {
-   	 return name == null ? email : name + " <" + email + ">";
+        return name == null ? email : name + " <" + email + ">";
+    }
+
+    private void defaultParameters() {
+        ParameterMap def = configuration.defaultParameters();
+        for (String key : def.keySet())
+            if (!parameters.containsKey(key))
+                parameters.addAll(key, def.getValues(key));
     }
 
     private MailBuilder param(String name, String value) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(value);
-        form.param(name, value);
+        parameters.add(name, value);
         return this;
     }
 }

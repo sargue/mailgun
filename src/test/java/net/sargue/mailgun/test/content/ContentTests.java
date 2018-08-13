@@ -1,16 +1,16 @@
-package net.sargue.mailgun.test;
+package net.sargue.mailgun.test.content;
 
 import net.sargue.mailgun.Configuration;
 import net.sargue.mailgun.content.Body;
 import net.sargue.mailgun.content.ContentConverter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ContentTests {
     static final String CRLF = "\r\n";
@@ -32,8 +32,8 @@ public class ContentTests {
     @Test
     public void bodyContentOverride() {
         Body content = Body.builder().build();
-        content.html("html override");
-        content.text("text override");
+        content.html("html override")
+               .text("text override");
         assertEquals("html override", content.html());
         assertEquals("text override", content.text());
     }
@@ -55,8 +55,8 @@ public class ContentTests {
         cfg = cfg.registerConverter(converter, Date.class);
 
         Body body = Body.builder(cfg)
-            .text(date)
-            .build();
+                        .text(date)
+                        .build();
 
         assertEquals("26/10/1985", body.text());
     }

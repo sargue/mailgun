@@ -1,27 +1,30 @@
 package net.sargue.mailgun;
 
-import org.glassfish.jersey.client.JerseyClientBuilder;
+import net.sargue.mailgun.adapters.MailImplementationHelper;
+import net.sargue.mailgun.log.Logger;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.InvocationCallback;
 import java.util.List;
-
-import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
-import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ForkJoinPool;
 
 /**
- * Representation of a Mailgun's mail request.
+ * A ready to send Mail.
  * <p>
- * It must be built using a {@link MailBuilder}.
+ * Built using a {@link MailBuilder} this object is the last step before sending. It has
+ * access to all parameters and attachments.
+ * <p>
+ * The specific implementation of this interface usually depends on the REST client library
+ * used to send the request to the Mailgun service.
+ * <p>
+ * <strong>Implementation notes</strong>
+ * <p>
+ * If you are writing a custom adapter for a unsupported REST client library you are going
+ * to need to create a class implementing this interface. The class
+ * {@link MailImplementationHelper} might prove useful in that case.
  */
-public abstract class Mail {
-    private final Configuration configuration;
-
-    Mail(Configuration configuration) {
-        this.configuration = configuration;
-    }
+public interface Mail {
+    Logger log = Logger.getLogger(Mail.class);
 
     /**
      * Convenience shortcut to {@code MailBuilder.using(configuration)}
@@ -29,38 +32,39 @@ public abstract class Mail {
      * @param configuration the configuration to use
      * @return a new {@link MailBuilder} which uses the specified configuration
      */
-    public static MailBuilder using(Configuration configuration) {
+    static MailBuilder using(Configuration configuration) {
         return new MailBuilder(configuration);
     }
 
     /**
      * Retrieves the value of a given mail parameter. If there are multiple
      * values the first one is returned. If the parameter hasn't been set
-     * null is returned.
+     * {@link Optional#empty()} is returned.
      *
-     * Can only be used on simple parameters (String). So don't use it on
-     * <i>attachment</i> for example. Doing so will throw a
-     * {@link IllegalStateException}.
+     * Can only be used on simple parameters (String), not attachments.
      *
      * @param param the name of the parameter
-     * @return the first value of the parameter, if any, null otherwise
-     * @throws IllegalStateException if the parameter is not a simple (basic text) one
+     * @return the first value of the parameter, if any
      */
-    public abstract String getFirstValue(String param);
+    Optional<String> getFirstValue(String param);
 
     /**
      * Retrieves the values of a given mail parameter. If the parameter hasn't
-     * been set an empty list is returned.
+     * been set an empty list is returned. The returned list must be read-only.
      *
-     * Can only be used on simple parameters (String). So don't use it on
-     * <i>attachment</i> for example. Doing so will throw a
-     * {@link IllegalStateException}.
+     * Can only be used on simple parameters (String), not attachments.
      *
      * @param param the name of the parameter
      * @return the list of values for the parameter or an empty list
-     * @throws IllegalStateException if the parameter is not a simple (basic text) one
      */
-    public abstract List<String> getValues(String param);
+    List<String> getValues(String param);
+
+    /**
+     * Retrieves the set of names of the parameters.
+     *
+     * @return the set of names of the parameters
+     */
+    Set<String> parameterKeySet();
 
     /**
      * Sends the email.
@@ -72,11 +76,7 @@ public abstract class Mail {
      * @return the response from the Mailgun service or null if the message
      *         is not sent (filtered by {@link MailSendFilter}
      */
-    public Response send() {
-        if (!configuration.mailSendFilter().filter(this)) return null;
-        prepareSend();
-        return new Response(request().post(entity()));
-    }
+    Response send();
 
     /**
      * Sends the email asynchronously.
@@ -84,43 +84,61 @@ public abstract class Mail {
      * This method returns immediately, sending the request to the Mailgun
      * service in the background. It is a <strong>non-blocking</strong>
      * method.
+     * <p>
+     * If the callback is null it is ignored, no NPE. Notice that if you pass a null to this
+     * method and there is a {@link MailRequestCallbackFactory} set in the configuration
+     * <strong>it is not used</strong>. The callback is just ignored.
+     * <p>
+     * A default implementation is provided that uses the {@link ForkJoinPool#commonPool()} to
+     * submit the job using a call to the blocking method {@link #send()}.
+     * <p>
+     * Most REST clients provide non blocking calls that should be preferred over this
+     * default method.
      *
      * @param callback the callback to be invoked upon completion or failure
      */
-    public void sendAsync(final MailRequestCallback callback) {
-        if (!configuration.mailSendFilter().filter(this)) return;
-        prepareSend();
-        request()
-                .async()
-                .post(entity(),
-                      new InvocationCallback<javax.ws.rs.core.Response>() {
-                          @Override
-                          public void completed(javax.ws.rs.core.Response o) {
-                              callback.completed(new Response(o));
-                          }
+    default void sendAsync(MailRequestCallback callback) {
+        log.debug("Using default implementation of Mail#sendAsync(MailRequestCallback)");
 
-                          @Override
-                          public void failed(Throwable throwable) {
-                              callback.failed(throwable);
-                          }
-                      });
+        if (!configuration().mailSendFilter().filter(this)) return;
+
+        ForkJoinPool.commonPool().execute(() -> {
+            try {
+                Response response = send();
+                if (callback != null)
+                    callback.completed(response);
+            } catch (Exception e) {
+                if (callback != null)
+                    callback.failed(e);
+                else
+                    log.warn("Sending failed without callback.", e);
+            }
+        });
     }
 
     /**
      * Sends the email asynchronously. It uses the configuration provided
-     * default callback if available, ignoring the outcome otherwise.
-     *
+     * default callback (see {@link MailRequestCallbackFactory}) if available, ignoring the
+     * outcome otherwise.
+     * <p>
      * If you want to use a specific callback for this call use
      * {@link #sendAsync(MailRequestCallback)} instead.
+     * <p>
+     * If you want to ignore the configured factory once just use
+     * {@link #sendAsync(MailRequestCallback)} with a custom callback or null.
+     * <p>
+     * A default implementation is provided that calls {@link #sendAsync(MailRequestCallback)}
+     * with a callback generated from the configured {@link MailRequestCallbackFactory}.
      */
-    public void sendAsync() {
-        if (!configuration.mailSendFilter().filter(this)) return;
-        MailRequestCallbackFactory factory = configuration.mailRequestCallbackFactory();
-        if (factory == null) {
-            prepareSend();
-            request().async().post(entity());
-        } else
-            sendAsync(factory.create(this));
+    default void sendAsync() {
+        log.debug("Using default implementation of Mail#sendAsync()");
+
+        if (!configuration().mailSendFilter().filter(this)) return;
+
+        MailRequestCallback callback = configuration().mailRequestCallbackFactory()
+                                                      .map(factory -> factory.create(this))
+                                                      .orElse(null);
+        sendAsync(callback);
     }
 
     /**
@@ -128,32 +146,5 @@ public abstract class Mail {
      *
      * @return the underlying configuration
      */
-    public Configuration configuration() {
-        return configuration;
-    }
-
-    abstract Entity<?> entity(); //NOSONAR
-
-    abstract void prepareSend();
-
-    void configureClient(Client client) {
-        //defaults to no-op
-    }
-
-    private Invocation.Builder request() {
-        Client client = JerseyClientBuilder.newClient();
-
-        if (configuration.connectTimeout() != 0)
-            client.property(CONNECT_TIMEOUT, configuration.connectTimeout());
-        if (configuration.readTimeout() != 0)
-            client.property(READ_TIMEOUT, configuration.readTimeout());
-
-        configureClient(client);
-        return client
-                .register(configuration.httpAuthenticationFeature())
-                .target(configuration.apiUrl())
-                .path(configuration.domain())
-                .path("messages")
-                .request();
-    }
+    Configuration configuration();
 }

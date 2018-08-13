@@ -23,13 +23,6 @@ class MessageBuilder {
         sb.append(CRLF);
         return this;
     }
-
-    MessageBuilder nl(int count) {
-        for (int i = 0; i < count; i++)
-            sb.append(CRLF);
-        return this;
-    }
-
     @Override
     public String toString() {
         return sb.toString();

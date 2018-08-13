@@ -3,8 +3,8 @@ package net.sargue.mailgun.test;
 import net.sargue.mailgun.Configuration;
 import net.sargue.mailgun.Mail;
 import net.sargue.mailgun.content.Body;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * This are not proper real test, just a placeholder to work with the examples.
@@ -13,8 +13,8 @@ public class ExampleTest {
 
     private Configuration configuration;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         configuration = new Configuration()
             .domain("somedomain.com")
             .apiKey("key-xxxxxxxxxxxxxxxxxxxxxxxxx")

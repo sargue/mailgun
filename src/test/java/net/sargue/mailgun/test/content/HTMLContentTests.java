@@ -1,10 +1,13 @@
-package net.sargue.mailgun.test;
+package net.sargue.mailgun.test.content;
 
 import net.sargue.mailgun.content.Body;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static net.sargue.mailgun.test.ContentTests.*;
-import static org.junit.Assert.assertEquals;
+import static net.sargue.mailgun.test.content.ContentTests.CRLF;
+import static net.sargue.mailgun.test.content.ContentTests.POST_HTML;
+import static net.sargue.mailgun.test.content.ContentTests.PRE_HTML;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HTMLContentTests {
     @Test
@@ -382,11 +385,9 @@ public class HTMLContentTests {
                      body.html());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void unclosedTag() {
-        Body.builder()
-            .tag("span")
-            .build();
+        assertThrows(IllegalStateException.class, () -> Body.builder().tag("span").build());
     }
 
     @Test

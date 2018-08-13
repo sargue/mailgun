@@ -302,7 +302,7 @@ public class Builder {
      */
     public Builder br() {
         html.a("<br>");
-        text.nl(2);
+        text.nl().nl();
         return this;
     }
 
@@ -450,7 +450,7 @@ public class Builder {
      * @return this builder
      */
     public <T> Builder rowh(String label, T data) {
-        return tag("tr").cellHeader(label, false).cell(data).end();
+        return tag("tr").cellHeader(label).cell(data).end();
     }
 
     /**
@@ -542,11 +542,9 @@ public class Builder {
         return this;
     }
 
-    private Builder cellHeader(String label, boolean lastCell) {
+    private Builder cellHeader(String label) {
         cellHeader().text(label).end();
-        if (!lastCell) {
-            text.a(',');
-        }
+        text.a(',');
         return this;
     }
     
