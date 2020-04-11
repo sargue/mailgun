@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,15 +38,24 @@ public class BasicTests {
 
     private static String expectedAuthHeader;
 
-    @BeforeClass
-    public static void init() {
-        configuration = new Configuration()
+    private static Configuration buildConfiguration() {
+        return new Configuration()
             .apiUrl("http://localhost:" + PORT + "/api")
             .domain(DOMAIN)
             .apiKey("key-thisisagibberishlongstring")
             .from(FROM_NAME, FROM_EMAIL);
+    }
+
+    @BeforeClass
+    public static void init() {
+        configuration = buildConfiguration();
         String userpass = "api:" + configuration.apiKey();
         expectedAuthHeader = Base64.encodeBase64String(userpass.getBytes());
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        configuration.close();
     }
 
     private MappingBuilder expectedBasicPost() {
@@ -133,8 +143,7 @@ public class BasicTests {
     public void withDefaultParameter() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 
-        Configuration cfg = configuration
-            .copy()
+        Configuration cfg = buildConfiguration()
             .addDefaultParameter("h:sender", "from@default.com");
 
         Response response = MailBuilder.using(cfg)
@@ -143,6 +152,8 @@ public class BasicTests {
                                        .text("Hello world!")
                                        .build()
                                        .send();
+
+        cfg.close();
 
         assertTrue(response.isOk());
         assertEquals(Response.ResponseType.OK,
@@ -161,8 +172,7 @@ public class BasicTests {
     public void withDefaultParameterOverridden() {
         stubFor(expectedBasicPost().willReturn(aResponse().withStatus(200)));
 
-        Configuration cfg = configuration
-            .copy()
+        Configuration cfg = buildConfiguration()
             .addDefaultParameter("h:sender", "from@default.com");
 
         Response response = MailBuilder.using(cfg)
@@ -173,6 +183,8 @@ public class BasicTests {
                                                   "from@specific.com")
                                        .build()
                                        .send();
+
+        cfg.close();
 
         assertTrue(response.isOk());
         assertEquals(Response.ResponseType.OK,
@@ -492,5 +504,12 @@ public class BasicTests {
 
         assertNull(response);
         assertTrue(filterExecuted.get());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void afterClose() {
+        Configuration configuration = new Configuration();
+        configuration.close();
+        MailBuilder.using(configuration).build().send();
     }
 }

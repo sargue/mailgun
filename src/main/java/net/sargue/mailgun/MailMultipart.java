@@ -4,15 +4,15 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 class MailMultipart extends Mail {
-    private FormDataMultiPart form;
+    private final FormDataMultiPart form;
 
     MailMultipart(Configuration configuration, FormDataMultiPart form) {
         super(configuration);
@@ -52,7 +52,7 @@ class MailMultipart extends Mail {
     }
 
     @Override
-    void configureClient(Client client) {
-        client.register(MultiPartFeature.class);
+    void configureTarget(WebTarget target) {
+        target.register(MultiPartFeature.class);
     }
 }

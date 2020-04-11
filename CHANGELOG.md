@@ -88,3 +88,9 @@ this issue report](https://github.com/sargue/mailgun/issues/21)
 ## 1.9.0
 
 * New configuration options to define timeouts for the underlying connection client. [#29](https://github.com/sargue/mailgun/issues/29)
+
+## 1.9.1
+
+* JAX-RS client reuse, better performance under load. Remember to reuse
+the Configuration object and close it when it's no longer needed. It's safe
+to use just one for the entire life of the application.

@@ -1,14 +1,20 @@
 package net.sargue.mailgun;
 
 import net.sargue.mailgun.content.ContentConverter;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
+import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 
 /**
  * Holds the configuration parameters needed by the library. This is a mutable
@@ -17,6 +23,14 @@ import java.util.Map;
  * Here you configure the Mailgun properties and credentials and some defaults
  * like the {@code From} address for the emails so you don't have to set it
  * everytime.
+ * <p>
+ * This class is designed to be built once and used everywhere on your
+ * application unless you require different settings. Internally it has
+ * a single JAX-RS client for all associated requests.
+ * <p>
+ * This class is thread safe.
+ * <p>
+ * Remember to close it when you don't need it anymore to free up resources.
  */
 public class Configuration {
     private String apiUrl = "https://api.mailgun.net/v3";
@@ -26,9 +40,10 @@ public class Configuration {
     private int readTimeout = 0;
     private MultivaluedMap<String,String> defaultParameters = new MultivaluedHashMap<>();
 
+    private final Client client = JerseyClientBuilder.newClient();
     private MailRequestCallbackFactory mailRequestCallbackFactory = null;
     private MailSendFilter mailSendFilter = defaultFilter;
-    private List<Converter<?>> converters =
+    private final List<Converter<?>> converters =
         Collections.synchronizedList(new ArrayList<Converter<?>>());
 
     private static final ContentConverter<Object> defaultConverter =
@@ -47,8 +62,8 @@ public class Configuration {
     };
 
     private static final class Converter<T> {
-        private Class<T> classOfConverter;
-        private ContentConverter<? super T> contentConverter;
+        private final Class<T> classOfConverter;
+        private final ContentConverter<? super T> contentConverter;
 
         Converter(Class<T> classOfConverter,
                   ContentConverter<? super T> contentConverter)
@@ -178,6 +193,7 @@ public class Configuration {
      */
     public Configuration connectTimeout(int connectTimeout) {
         this.connectTimeout = connectTimeout;
+        client.property(CONNECT_TIMEOUT, connectTimeout == 0 ? null : connectTimeout);
         return this;
     }
 
@@ -195,6 +211,7 @@ public class Configuration {
      */
     public Configuration readTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
+        client.property(READ_TIMEOUT, readTimeout == 0 ? null : readTimeout);
         return this;
     }
 
@@ -394,10 +411,23 @@ public class Configuration {
         return (ContentConverter<T>) defaultConverter;
     }
 
-    HttpAuthenticationFeature httpAuthenticationFeature() {
+    /**
+     * Closes configuration and associated resources. Mainly the JAX-RS client.
+     *
+     * Don't use this configuration after closing it.
+     */
+    public void close() {
+        client.close();
+    }
+
+    private HttpAuthenticationFeature httpAuthenticationFeature() {
         return HttpAuthenticationFeature
                 .basicBuilder()
                 .credentials("api", apiKey())
                 .build();
+    }
+
+    WebTarget getTarget() {
+        return client.target(apiUrl).register(httpAuthenticationFeature());
     }
 }

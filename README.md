@@ -61,7 +61,7 @@ The library is pretty straighforward. You just need to remember two classes:
 * `Mail`: the entry point to build and send emails
 * `MailContent`: an optional helper to build HTML and text message bodys
 
-That was three classes but the last one is optional although very useful
+That were three classes but the last one is optional although very useful
 if you want to send some simple messages in HTML.
 
 The library is built to be used as a fluent interface, almost a DSL, so the code
