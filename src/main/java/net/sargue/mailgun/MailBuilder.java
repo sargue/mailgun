@@ -226,6 +226,26 @@ public class MailBuilder {
     }
 
     /**
+     * Sets the name of the pre saved template that will be used to be sent by Mailgun.
+     *
+     * @param templateName the name of pre saved template on Mailgun
+     * @return this builder
+     */
+    public MailBuilder template(String templateName){
+        return param("template", templateName);
+    }
+
+    /**
+     * This method adds the param {@code h:X-Mailgun-Variables} to the Mailgun request.
+     *
+     * @param variables custom JSON data to be attached to the message.
+     * @return this builder
+     */
+    public MailBuilder variables(String variables){
+        return param("h:X-Mailgun-Variables", variables);
+    }
+
+    /**
      * Convenience shortcut to {@code Body.builder(configuration)}
      *
      * @return a new {@link Builder} associated with this MailBuilder
