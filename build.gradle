@@ -9,7 +9,7 @@ apply plugin: "jacoco"
 
 group 'net.sargue'
 archivesBaseName = 'mailgun'
-version '1.9.3'
+version '1.10.0'
 
 sourceCompatibility = 1.7
 
