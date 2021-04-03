@@ -226,6 +226,26 @@ public class MailBuilder {
     }
 
     /**
+     * Sets the name of transactional email template to be sent.
+     *
+     * @param templateName the name of transactional email template
+     * @return this builder
+     */
+    public MailBuilder template(String templateName) {
+        return param("template", templateName);
+    }
+
+    /**
+     * This method adds the param {@code h:X-Mailgun-Variables} to the Mailgun request.
+     *
+     * @param variables custom JSON data to be attached to the message.
+     * @return this builder
+     */
+    public MailBuilder variables(String variables) {
+        return param("h:X-Mailgun-Variables", variables);
+    }
+
+    /**
      * Convenience shortcut to {@code Body.builder(configuration)}
      *
      * @return a new {@link Builder} associated with this MailBuilder
