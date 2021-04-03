@@ -9,6 +9,4 @@ install: /bin/true
 before_install:
  - chmod +x gradlew
 script:
- - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./gradlew check; fi
- - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew check sonarqube -PSONARQUBE_TOKEN=$SONAR_TOKEN; fi
-
+ - ./gradlew check
