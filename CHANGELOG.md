@@ -98,3 +98,12 @@ to use just one for the entire life of the application.
 ## 1.9.2
 
 * security improvements
+
+## 1.10.0
+
+* Merged PR [to add convenience methods to work with Mailgun's templates](https://github.com/sargue/mailgun/pull/36)
+* Updated Gradle to version 6, now the project is built with Java 11 but
+keeping compatibility with Java 7 for now.
+* Due to the sunsetting of bintray I'm now publishing directly to Maven Central
+via Sonatype.
+  
