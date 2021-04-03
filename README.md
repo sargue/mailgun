@@ -75,7 +75,10 @@ published thanks to the great javadoc.io service.
 
 ### Requirements and dependencies
 
-Requires Java 7+.
+The runtime requirement is Java 7 or higher.
+
+Gradle is used to build the project and requires at least Java 8. I currently
+build it using Java 11 (AdoptOpenJDK 11 with HotSpot).
 
 Depends on [Jersey 2](https://jersey.github.io/) client.
 
