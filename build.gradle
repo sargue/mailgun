@@ -1,11 +1,9 @@
 plugins {
     id "com.jfrog.bintray" version "1.6"
-    id "org.sonarqube" version "2.6.2"
 }
 
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: "jacoco"
 
 group 'net.sargue'
 archivesBaseName = 'mailgun'
@@ -96,15 +94,5 @@ bintray {
                 passphrase = project.hasProperty('BINTRAY_GPG') ? BINTRAY_GPG : ''
             }
         }
-    }
-}
-
-sonarqube {
-    properties {
-        property 'sonar.projectKey', 'mailgun'
-        property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.branch.name', 'master'
-        property 'sonar.login', SONARQUBE_TOKEN
-        property 'sonar.organization', 'default'
     }
 }
