@@ -6,7 +6,7 @@ import java.util.Deque;
 /**
  * This class is deprecated. Don't use it. See below for instructions on how to
  * migrate current code.
- * <h3>Migration guide</h3>
+ * <h2>Migration guide</h2>
  * <p>
  * Where you had
  * <pre>
