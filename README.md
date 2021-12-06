@@ -43,7 +43,7 @@ Add the dependency to your project:
 
 This project depends on the Jersey library (see above). The Jersey library
 is part of the bigger *glassfish*/*Oracle* ecosystem which apparently
-doesn't have top notch compatibility very high on its priority list.
+doesn't have top-notch compatibility very high on its priority list.
 
 Said so, you may encounter problems with dependencies as there are some
 libraries which are repackaged under different Maven coordinates and will
@@ -64,7 +64,7 @@ That were three classes but the last one is optional although very useful
 if you want to send some simple messages in HTML.
 
 The library is built to be used as a fluent interface, almost a DSL, so the code
-is quite self explanatory.
+is quite self-explanatory.
 
 ### Javadocs
 
@@ -83,7 +83,7 @@ Depends on [Jersey 2](https://jersey.github.io/) client.
 
 ### Android support
 
-There is not. Android is not officially supported. I have no experience on Android development so I won't be able to help much on any issue. There are a [number of issues raised](https://github.com/sargue/mailgun/issues?q=label%3Aandroid) which indicate that the library *can* be used on Android but YMMV.
+There is not. Android is not officially supported. I have no experience on Android development, so I won't be able to help much on any issue. There are a [number of issues raised](https://github.com/sargue/mailgun/issues?q=label%3Aandroid) which indicate that the library *can* be used on Android but YMMV.
 
 The main issue about using this library on android is the repackaging of some packages done by Jersey, like `javax.inject`. If using gradle you could try to add this:
 
@@ -97,7 +97,7 @@ Anyway try it and if you find a problem please report it. I will try to help.
 
 ### Configuration
 
-First of all you need to prepare a `Configuration` object used by the library.
+First, you need to prepare a `Configuration` object used by the library.
 
 Usually you can do this once and keep the same object for all your calls. It
 is thread safe.
@@ -169,9 +169,9 @@ The classes on the package `net.sargue.mailgun.content` are designed
 to easily build basic HTML 
 messages. It's not supposed to be used for building cutting edge responsive
 modern HTML messages. It's just for simple cases where you need to send a
-message and you want to use some basic HTML like tables and some formatting.
+message with some basic HTML like tables and some formatting.
 
-Some self explanatory examples:
+Some self-explanatory examples:
 
 ```java
 Mail.using(configuration)
@@ -202,7 +202,7 @@ Mail.using(configuration)
     .send();
 ```
 
-Of course you can keep the body content and mail building separated.
+Of course, you can keep the body content and mail building separated.
 
 ```java
 Body body = Body.builder()
@@ -235,6 +235,6 @@ The mail content test suite is a work in progress right now.
 
 ## Contributing
 
-All contributions are welcome. Use the issues section to send feature requests.
+All contributions are welcome. Use the issues' section to send feature requests.
 Pull requests are also welcome, just try to stick with the overall code style
 and provide some tests if possible.
