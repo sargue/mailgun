@@ -109,6 +109,22 @@ Configuration configuration = new Configuration()
     .from("Test account", "postmaster@somedomain.com");
 ```
 
+#### A note on region endpoints
+
+The default configuration por the API base URL is the US endpoint. If you are
+using [a different endpoint](https://documentation.mailgun.com/en/latest/api-intro.html#base-url-1) you should set the base URL manually on the
+configuration object.
+
+Example to use the EU (European) endpoint:
+
+```java
+Configuration configuration = new Configuration()
+    .domain("somedomain.com")
+    .apiURL("https://api.eu.mailgun.net/v3")
+    .apiKey("key-xxxxxxxxxxxxxxxxxxxxxxxxx")
+    .from("Test account", "postmaster@somedomain.com");
+```
+
 ### Sending a basic email
 
 ```java
