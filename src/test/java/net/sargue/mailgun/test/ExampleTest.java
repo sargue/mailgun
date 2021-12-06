@@ -14,7 +14,7 @@ public class ExampleTest {
     private Configuration configuration;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         configuration = new Configuration()
             .domain("somedomain.com")
             .apiKey("key-xxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -110,5 +110,16 @@ public class ExampleTest {
             .to("marty@mcfly.com")
             .subject("Come see my home!")
             .build();
+    }
+
+    @Test
+    public void templateExample() {
+        Mail.using(configuration)
+            .to("marty@mcfly.com")
+            .subject("Activate your account")
+            .template("account_activation")
+            .parameter("v:name", "Doc Brown")
+            .build()
+            .send();
     }
 }
