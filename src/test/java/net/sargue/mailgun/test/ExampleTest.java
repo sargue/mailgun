@@ -113,6 +113,22 @@ public class ExampleTest {
     }
 
     @Test
+    public void ex7() {
+        Configuration configuration = new Configuration()
+            .domain("somedomain.com")
+            .apiUrl("https://api.eu.mailgun.net/v3")
+            .apiKey("key-xxxxxxxxxxxxxxxxxxxxxxxxx")
+            .from("Test account", "postmaster@somedomain.com");
+
+        Mail.using(configuration)
+            .to("postmaster@somedomain.com")
+            .subject("This is the subject")
+            .text("Hello world!")
+            .build()
+            .send();
+    }
+
+    @Test
     public void templateExample() {
         Mail.using(configuration)
             .to("marty@mcfly.com")
