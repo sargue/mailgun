@@ -120,7 +120,7 @@ Example to use the EU (European) endpoint:
 ```java
 Configuration configuration = new Configuration()
     .domain("somedomain.com")
-    .apiURL("https://api.eu.mailgun.net/v3")
+    .apiUrl("https://api.eu.mailgun.net/v3")
     .apiKey("key-xxxxxxxxxxxxxxxxxxxxxxxxx")
     .from("Test account", "postmaster@somedomain.com");
 ```
