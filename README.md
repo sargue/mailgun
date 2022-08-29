@@ -179,6 +179,16 @@ Mail.using(configuration)
     .send();
 ```
 
+```java
+Mail.using(configuration)
+    .to("marty@mcfly.com")
+    .subject("Activate your account")
+    .template("account_activation")
+    .parameter("v:name", "Doc Brown")
+    .build()
+    .send();
+```
+
 ### Advanced content using content helpers
 
 The classes on the package `net.sargue.mailgun.content` are designed 
