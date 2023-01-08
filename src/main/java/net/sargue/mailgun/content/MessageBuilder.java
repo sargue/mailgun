@@ -3,7 +3,7 @@ package net.sargue.mailgun.content;
 class MessageBuilder {
     private static final String CRLF = "\r\n";
 
-    private StringBuilder sb = new StringBuilder();
+    private final StringBuilder sb = new StringBuilder();
 
     MessageBuilder a(String str) {
         sb.append(str == null ? "" : str);
@@ -21,12 +21,6 @@ class MessageBuilder {
 
     MessageBuilder nl() {
         sb.append(CRLF);
-        return this;
-    }
-
-    MessageBuilder nl(int count) {
-        for (int i = 0; i < count; i++)
-            sb.append(CRLF);
         return this;
     }
 

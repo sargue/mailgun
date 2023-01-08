@@ -3,7 +3,7 @@ package net.sargue.mailgun;
 import net.sargue.mailgun.content.Body;
 import net.sargue.mailgun.content.Builder;
 
-import javax.ws.rs.core.Form;
+import jakarta.ws.rs.core.Form;
 import java.util.Objects;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class MailBuilder {
     private final Configuration configuration;
-    private Form form = new Form();
+    private final Form form = new Form();
 
     /**
      * Creates a {@code MailBuilder} with the provided configuration.
@@ -99,7 +99,7 @@ public class MailBuilder {
     }
 
     /**
-     * Adds a destination recipient's address.
+     * Adds a destination recipient address.
      *
      * @param name  the name of the destination recipient
      * @param email the address of the destination recipient
@@ -125,7 +125,7 @@ public class MailBuilder {
     }
 
     /**
-     * Adds a CC recipient's address.
+     * Adds a CC recipient address.
      *
      * @param name  the name of the CC recipient
      * @param email the address of the CC recipient

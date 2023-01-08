@@ -130,7 +130,7 @@ public class MailContent { //NOSONAR
      */
     public MailContent br() {
         html.a("<br>");
-        text.nl(2);
+        text.nl().nl();
         return this;
     }
 

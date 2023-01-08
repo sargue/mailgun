@@ -5,8 +5,8 @@ import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public class MultipartBuilder {
     private static final String ATTACHMENT_NAME = "attachment";
 
     private final Configuration configuration;
-    private FormDataMultiPart form = new FormDataMultiPart();
+    private final FormDataMultiPart form = new FormDataMultiPart();
 
     MultipartBuilder(MailBuilder mailBuilder) {
         configuration = mailBuilder.configuration();

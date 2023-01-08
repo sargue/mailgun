@@ -12,7 +12,7 @@ import java.util.List;
  * A helper designed to build easily basic dual content type HTML and plain
  * text messages. It's not supposed to be used for building cutting edge
  * responsive modern HTML messages. It's just for simple cases where you need
- * to send a message and you want to use some basic HTML like tables and some
+ * to send a message, and you want to use some basic HTML like tables and some
  * formatting.
  * <p>
  * All null values used in text and content in general are simply replaced
@@ -35,20 +35,20 @@ public class Builder {
         "</table>", "</thead>", "</tbody>", "</tfoot>", "</tr>"
     );
 
-    private MessageBuilder html = new MessageBuilder().a(PRE_HTML);
-    private MessageBuilder text = new MessageBuilder();
-    private Deque<String> ends = new ArrayDeque<>();
+    private final MessageBuilder html = new MessageBuilder().a(PRE_HTML);
+    private final MessageBuilder text = new MessageBuilder();
+    private final Deque<String> ends = new ArrayDeque<>();
 
-    private Configuration configuration;
+    private final Configuration configuration;
     private MailBuilder mailBuilder;
 
     /**
      * Creates a new builder with the given configuration.
-     *
+     * <p>
      * The configuration object is queried for some objects needed by different
      * parts of this class. Basically, converters (numbers, dates...) and the
      * locale used by those converters, when applicable.
-     *
+     * <p>
      * You can also set any of those objects and override the configured ones.
      * Check the related methods of this class.
      *
@@ -84,10 +84,10 @@ public class Builder {
     /**
      * Convenience method for chaining the creation of the content body with
      * the creation of the mail envelope.
-     *
+     * <p>
      * If this builder was created associated to a MailBuilder, that one (with
      * the content updated) is returned.
-     *
+     * <p>
      * Else it returns a new {@link MailBuilder} with this content and using the
      * same * configuration that this Builder was created with.
      *
@@ -302,7 +302,7 @@ public class Builder {
      */
     public Builder br() {
         html.a("<br>");
-        text.nl(2);
+        text.nl().nl();
         return this;
     }
 
@@ -450,7 +450,7 @@ public class Builder {
      * @return this builder
      */
     public <T> Builder rowh(String label, T data) {
-        return tag("tr").cellHeader(label, false).cell(data).end();
+        return tag("tr").cellHeader(label).cell(data).end();
     }
 
     /**
@@ -542,11 +542,9 @@ public class Builder {
         return this;
     }
 
-    private Builder cellHeader(String label, boolean lastCell) {
+    private Builder cellHeader(String label) {
         cellHeader().text(label).end();
-        if (!lastCell) {
-            text.a(',');
-        }
+        text.a(',');
         return this;
     }
     
