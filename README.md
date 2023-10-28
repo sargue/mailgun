@@ -4,6 +4,13 @@
 [![Build Status](https://travis-ci.org/sargue/mailgun.svg?branch=master)](https://travis-ci.org/sargue/mailgun)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 
+## PLEASE READ (there's now an official library)
+
+Since I created this library Mailgun has released an
+[official Java library](https://github.com/mailgun/mailgun-java). Please check it.
+You might want to use it instead of this one, as it has more features and is
+maintained by the Mailgun team. I haven't used it myself.
+
 ## Introduction
 ### What is this?
 
