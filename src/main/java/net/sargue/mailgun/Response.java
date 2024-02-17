@@ -2,11 +2,11 @@ package net.sargue.mailgun;
 
 /**
  * Represents a response from the Mailgun service.
- *
+ * <p>
  * This class encapsulates the {@code javax.ws.rs.core.Response} and extracts
  * some data from it like response status code, mailgun error code and the
  * response message as a String-encoded JSON.
- *
+ * <p>
  * For example, the response payload (body) of sending a message is this (in
  * JSON format):
  * <pre>{@code
@@ -25,11 +25,11 @@ public class Response {
         OK, BAD_REQUEST, UNAUTHORIZED, REQUEST_FAILED, NOT_FOUND, SERVER_ERROR
     }
 
-    private ResponseType responseType;
-    private int responseCode;
-    private String responseMessage;
+    private final ResponseType responseType;
+    private final int responseCode;
+    private final String responseMessage;
 
-    Response(javax.ws.rs.core.Response response) {
+    Response(jakarta.ws.rs.core.Response response) {
         responseCode = response.getStatus();
         responseMessage = response.readEntity(String.class);
         switch (responseCode) {
@@ -64,7 +64,7 @@ public class Response {
 
     /**
      * The HTTP status code of the response.
-     *
+     * <p>
      * The different recognized codes are better encoded with the
      * {@link ResponseType}. This method accesses the exact status code.
      *
@@ -87,7 +87,7 @@ public class Response {
     /**
      * The response message body in JSON format as returned by the Mailgun
      * service.
-     *
+     * <p>
      * For example, the response payload (body) of sending a message is this (in
      * JSON format):
      * <pre>{@code

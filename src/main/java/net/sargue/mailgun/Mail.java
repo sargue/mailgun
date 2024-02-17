@@ -1,6 +1,6 @@
 package net.sargue.mailgun;
 
-import javax.ws.rs.client.*;
+import jakarta.ws.rs.client.*;
 import java.util.List;
 
 /**
@@ -29,7 +29,7 @@ public abstract class Mail {
      * Retrieves the value of a given mail parameter. If there are multiple
      * values the first one is returned. If the parameter hasn't been set
      * null is returned.
-     *
+     * <p>
      * Can only be used on simple parameters (String). So don't use it on
      * <i>attachment</i> for example. Doing so will throw a
      * {@link IllegalStateException}.
@@ -43,7 +43,7 @@ public abstract class Mail {
     /**
      * Retrieves the values of a given mail parameter. If the parameter hasn't
      * been set an empty list is returned.
-     *
+     * <p>
      * Can only be used on simple parameters (String). So don't use it on
      * <i>attachment</i> for example. Doing so will throw a
      * {@link IllegalStateException}.
@@ -58,7 +58,7 @@ public abstract class Mail {
      * Sends the email.
      * <p>
      * This method send the request to the Mailgun service. It is a
-     * <strong>blocking</strong> method so it will return upon request
+     * <strong>blocking</strong> method, so it will return upon request
      * completion.
      *
      * @return the response from the Mailgun service or null if the message
@@ -85,9 +85,9 @@ public abstract class Mail {
         request()
                 .async()
                 .post(entity(),
-                      new InvocationCallback<javax.ws.rs.core.Response>() {
+                      new InvocationCallback<jakarta.ws.rs.core.Response>() {
                           @Override
-                          public void completed(javax.ws.rs.core.Response o) {
+                          public void completed(jakarta.ws.rs.core.Response o) {
                               callback.completed(new Response(o));
                           }
 
@@ -101,7 +101,7 @@ public abstract class Mail {
     /**
      * Sends the email asynchronously. It uses the configuration provided
      * default callback if available, ignoring the outcome otherwise.
-     *
+     * <p>
      * If you want to use a specific callback for this call use
      * {@link #sendAsync(MailRequestCallback)} instead.
      */

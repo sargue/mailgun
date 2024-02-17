@@ -1,13 +1,13 @@
 package net.sargue.mailgun;
 
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 import net.sargue.mailgun.content.ContentConverter;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
  * class.
  * <p>
  * Here you configure the Mailgun properties and credentials and some defaults
- * like the {@code From} address for the emails so you don't have to set it
+ * like the {@code From} address for the emails, so you don't have to set it
  * everytime.
  * <p>
  * This class is designed to be built once and used everywhere on your
@@ -44,22 +44,11 @@ public class Configuration {
     private MailRequestCallbackFactory mailRequestCallbackFactory = null;
     private MailSendFilter mailSendFilter = defaultFilter;
     private final List<Converter<?>> converters =
-        Collections.synchronizedList(new ArrayList<Converter<?>>());
+        Collections.synchronizedList(new ArrayList<>());
 
-    private static final ContentConverter<Object> defaultConverter =
-        new ContentConverter<Object>() {
-            @Override
-            public String toString(Object value) {
-                return value.toString();
-            }
-        };
+    private static final ContentConverter<Object> defaultConverter = Object::toString;
 
-    private static final MailSendFilter defaultFilter = new MailSendFilter() {
-        @Override
-        public boolean filter(Mail mail) {
-            return true;
-        }
-    };
+    private static final MailSendFilter defaultFilter = mail -> true;
 
     private static final class Converter<T> {
         private final Class<T> classOfConverter;
@@ -188,7 +177,7 @@ public class Configuration {
      * The default value is infinity (0).
      * </p>
      *
-     * @param connectTimeout the connect timeout interval, in milliseconds
+     * @param connectTimeout connect timeout interval, in milliseconds
      * @return this configuration
      */
     public Configuration connectTimeout(int connectTimeout) {
@@ -270,7 +259,7 @@ public class Configuration {
 
     /**
      * Registers a filter to decide if a mail should be sent or not.
-     *
+     * <p>
      * This filter acts upon invokation of the different send methods in the
      * {@link Mail} class preventing the actual request to Mailgun if the
      * filter returns false.
@@ -339,7 +328,7 @@ public class Configuration {
 
     /**
      * Returns the internal map of default parameters.
-     *
+     * <p>
      * This is not a copy. Changes to this map are persistent.
      *
      * @return the internal map of default parameters
@@ -374,7 +363,7 @@ public class Configuration {
      * {@link net.sargue.mailgun.content.Builder#text(Object)} method.
      * <p>
      * They are matched in declaration order checking for assignability
-     * (inheritance). So you can have a a {@link java.util.Date} converter
+     * (inheritance). So you can have a {@link java.util.Date} converter
      * which will be applied to a {@link java.sql.Timestamp} object. You will
      * want to register the more specific converters first.
      *
@@ -413,7 +402,7 @@ public class Configuration {
 
     /**
      * Closes configuration and associated resources. Mainly the JAX-RS client.
-     *
+     * <p>
      * Don't use this configuration after closing it.
      */
     public void close() {

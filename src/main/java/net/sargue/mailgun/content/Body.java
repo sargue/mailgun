@@ -5,7 +5,7 @@ import net.sargue.mailgun.Configuration;
 /**
  * The body of an email message represented in two versions: HTML and plain
  * text.
- *
+ * <p>
  * Usually you don't build this class directly but using a {@link Builder}
  * helper. You get the reference to a builder using one of the static factory
  * methods on this class.

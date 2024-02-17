@@ -106,4 +106,8 @@ to use just one for the entire life of the application.
 keeping compatibility with Java 7 for now.
 * Due to the sunsetting of bintray I'm now publishing directly to Maven Central
 via Sonatype.
-  
+
+## 2.0.0
+
+* Migration to `jakarta.*` package name prefix: [#46](https://github.com/sargue/mailgun/issues/46)
+* If you need to keep compatibility with `javax.*` stick with versions 1.x.x
