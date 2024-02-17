@@ -28,13 +28,19 @@ A RESTful java library. Actually, the reference implementation of
 [JAX-RS](http://jax-rs-spec.java.net/), the standard API for RESTful web
 services for Java.
 
+## Versions and javax.* / jakarta.* package naming
+
+Version 2.x.x uses `jakarta.*` package naming.
+
+If you need the legacy `javax.*` package naming, please stick with 1.x.x versions.
+
 ## Installation
 
 Add the dependency to your project:
 
 #### Gradle
 
-`implementation 'net.sargue:mailgun:1.10.0'`
+`implementation 'net.sargue:mailgun:2.0.0'`
 
 #### Maven
 
@@ -42,7 +48,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>mailgun</artifactId>
-    <version>1.10.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -81,10 +87,7 @@ published thanks to the great javadoc.io service.
 
 ### Requirements and dependencies
 
-The runtime requirement is Java 7 or higher.
-
-Gradle is used to build the project and requires at least Java 8. I currently
-build it using Java 11 (AdoptOpenJDK 11 with HotSpot).
+The runtime requirement is Java 8 or higher.
 
 Depends on [Jersey 2](https://jersey.github.io/) client.
 
