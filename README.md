@@ -6,12 +6,13 @@
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
 [![Download](https://api.bintray.com/packages/sargue/maven/net.sargue%3Amailgun/images/download.svg)](https://bintray.com/sargue/maven/net.sargue%3Amailgun/_latestVersion)
 
-# ALPHA VERSION
+# DISCONTINUED
 
-This is the branch for a future version 2.x of the library. This is
-a work in progress. Comments, suggestions and contributions are welcome.
+This was a working branch that never got finished.
 
-This is alpha version work in progress. Breaking changes will happen.
+Since then, there's a version 2.0.0 but it's only change is the migration to the `jakarta.*` package naming.
+
+I do not plan any further development on this library, since [Mailgun published its own library](https://github.com/sargue/mailgun#please-read-theres-now-an-official-library).
 
 ## Introduction
 ### What is this?
